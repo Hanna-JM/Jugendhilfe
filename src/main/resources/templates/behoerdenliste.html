@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title>alle Beh&ouml;rden anzeigen</title>
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+    <h1 style="margin-left:2%">Liste aller Behoerden  <i class="fa fa-list"></i></h1>
+</div>
+<div class="addButton">
+    <a style="float:right" class="standard-button btn2" th:href="@{'/behoerde/neuebehoerde'}">
+        <span style="font-size: 20px">Neue Beh&ouml;rde anlegen</span>
+        <i style="font-size: 20px" class="fa fa-plus"></i></a>
+</div>
+<br/>
+<br/>
+
+
+<!--<form class="search" th:action="@{/behoerde/behoerdenliste}" method="get">-->
+
+<!--    <input id="txtsearch" type="text" class="form-control" placeholder="Behördenname, Behördenort, Behördenplz, Behördenbundesland eingeben" name="keyword"/>-->
+<!--    <button class="standard-button btn2"><i class="fa fa-search"></i> Suchen</button>-->
+<!--</form>-->
+
+<div class="row">
+    <br><br>
+    <input type="text" id="youthwelfareofficesearchtable" onkeyup="youthWelfareOfficeSearchFunction()"
+           placeholder="Suchbegriff hier eingeben ..."
+           aria-describedby="basic-addon1">
+</div>
+<br/>
+<br/>
+
+<div class="respTab">
+    <table class="table" id="listBehoerdenTabelle">
+        <thead class="thead-dark" >
+        <tr>
+            <th style="width:5%">B-Nr</th>
+            <th>Name</th>
+            <th>Strasse</th>
+            <th>PLZ</th>
+            <th>Ort</th>
+            <th>Bundesland</th>
+            <th>Telefon</th>
+            <th>Mail</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${listYouthWelfareOffice.isEmpty()}">
+            <td colspan="4"> keine Eintr&auml;ge vorhanden</td>
+        </tr>
+        <tr th:each="youthWelfareOffice :${listYouthWelfareOffice}">
+            <td th:text="${youthWelfareOffice.youthWelfareOfficeId}"></td>
+            <td th:text="${youthWelfareOffice.youthWelfareOfficeName}"></td>
+            <td th:text="${youthWelfareOffice.youthWelfareOfficeStreet}"></td>
+            <td th:text="${youthWelfareOffice.youthWelfareOfficeCityCode}"></td>
+            <td th:text="${youthWelfareOffice.youthWelfareOfficeCity}"></td>
+            <td th:text="${youthWelfareOffice.youthWelfareOfficeState}"></td>
+            <td th:text="${youthWelfareOffice.youthWelfareOfficeContactPhone}"></td>
+            <td th:text="${youthWelfareOffice.youthWelfareOfficeContactMail}"></td>
+
+
+            <td>
+                <a title="Details anzeigen" class="linkButton" th:href="@{'/behoerde/showbehoerde/' + ${youthWelfareOffice.youthWelfareOfficeId}}">
+
+                    <span>
+<!--                        Anzeigen-->
+                    </span><i style="color: orange;" class="fa fa-eye"></i></a>
+            </td>
+            <td>
+                <a title="Beh&ouml;rde bearbeiten"class="linkButton" th:href="@{'/behoerde/editbehoerde/' + ${youthWelfareOffice.youthWelfareOfficeId}}">
+
+                    <span>
+<!--                        &Auml;ndern-->
+                    </span><i style="color: green;" class="fa fa-edit"></i></a>
+            </td>
+
+            <td>
+                <a title="Beh&ouml;rde l&ouml;schen"class="linkButton" th:href="@{'/behoerde/deletebehoerde/' + ${youthWelfareOffice.youthWelfareOfficeId}}">
+                    <span>
+<!--                        L&ouml;schen-->
+                    </span><i style="color: red;" class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+<br>
+<br>
+<div style="margin-left: 20px">
+    <a class="backButton" onclick="history.back()" style="float:right, margin-right: 20px" > <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+
+
+
+
+</body>
+</html>

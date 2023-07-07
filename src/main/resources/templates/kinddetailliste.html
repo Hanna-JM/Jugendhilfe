@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title>Liste aller aktiven Kind - Wohngruppen Zuordnungen</title>
+</head>
+
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+<div class="title-page">
+    <h1 style="margin-left:2%">Liste aller aktiven Kind - Wohngruppen Zuordnungen <i class="fa fa-child"></i> <i class="fa fa-home"></i> </h1>
+</div>
+<div class="respTab">
+    <table class="table" id="listMitarbeiterDetailTabelle">
+        <thead class="thead-dark">
+        <tr>
+            <th style="width:5%">KdDt-Nr</th>
+            <th>Kd Vorname</th>
+            <th>Kd Nachname</th>
+            <th>Einzug-Datum</th>
+            <th>Auszug-Datum</th>
+            <th>Kd Wohngruppe</th>
+<!--            <th>Dok-Text</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${listkindDetail.isEmpty()}">
+            <td colspan="4"> keine KindDetail vorhanden</td>
+        </tr>
+        <tr th:each="kinddetail :${listkindDetail}">
+            <td th:text="${kinddetail.kindDetailId}"></td>
+<!--            <td th:text="${dokumentation.dokumentationdatum}"></td>-->
+<!--            <td th:text="${mitarbeiterdetail.mitarbeiter}"></td>-->
+            <td th:text="${kinddetail.kindDetailKind.kindVorname}"></td>
+            <td th:text="${kinddetail.kindDetailKind.kindNachname}"></td>
+            <td th:text="${#temporals.format(kinddetail.einzug, 'dd.MM.yyyy')}"></td>
+            <td th:text="${#temporals.format(kinddetail.auszug, 'dd.MM.yyyy')}"></td>
+            <td>
+                <div th:each="wohngruppe : ${kinddetail.kindDetailWohngruppe}">
+                    <span th:text="${wohngruppe.wohngruppenName}"></span>
+                </div>
+            </td>
+            <td th:text="${kinddetail.aktiv}"></td>
+            <td>
+                <a class="linkButton" th:href="@{'/kinddetail/editkinddetail/' + ${kinddetail.kindDetailId}}">
+                    <span>&Auml;ndern</span><i style="color: green;" class="fa fa-edit"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<br>
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit"  class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zurück</span></a>
+</div>
+<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+
+    <title>Ein ausgew&auml;hltes Kind anzeigen</title>
+</head>
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div><i style="font-size: 20px" class="fa fa-child"></i></div>
+<br/>
+<div style="display: flex; align-items: center;">
+    <div style="margin-left: 20px;">
+        <a class="backButton" th:href="@{'/kind/'}">
+            <i style="margin: inherit" class="fa fa-child"></i><i class="fa fa-backward"></i>
+            <span style="margin: 2px 2px 1px 5px;">Zur Kinderliste</span>
+        </a>
+    </div>
+
+    <div style="margin-left: 20px ">
+        <a class="backButton" href="javascript:history.back()">
+            <i style="margin: inherit" class="fa fa-backward"></i>
+            <span style="margin: 2px 2px 1px 5px;">Zurück</span>
+        </a>
+    </div>
+</div>
+<div class="container-fluid">
+    <!--                    <i class="fa fa-child"></i>-->
+    <div class="panel panel-default">
+        <br/>
+        <h1 style="margin-left:2%">
+            <div class="panel-heading">Kind&nbsp;Stammdaten&nbsp;<i class="fa fa-child"></i></div>
+        </h1>
+        <br/>
+        <div style="margin-left:15px">
+            <span th:text="${kind.kindVorname}" style="font-size: larger;font-weight: bold"></span>
+            <span th:text="${kind.kindNachname}" style="font-size: larger;font-weight: bold"></span>
+            <p>ALter: <span th:text="${kind.age}" style="font-weight: bold"></span></p>
+        </div>
+        <br/>
+
+        <div class="respTab">
+            <table class="table" id="listKinderTabelle">
+                <tbody>
+
+                <tr>
+                    <td style="width:20%">Personalnummer</td>
+                    <td th:text="${kind.kindId}"></td>
+                </tr>
+                <tr>
+                    <td>Vorname</td>
+                    <td th:text="${kind.kindVorname}"></td>
+                </tr>
+                <tr>
+                    <td>Nachname</td>
+                    <td th:text="${kind.kindNachname}"></td>
+                </tr>
+                <tr>
+                    <td>Geschlecht</td>
+                    <td th:text="${kind.kindGeschlecht}"></td>
+                </tr>
+                <tr>
+                    <td>Geburtsdatum</td>
+                    <td>
+                      <span th:text="${#temporals.format(kind.geburtsdatum, 'dd.MM.yyyy')}"
+                            th:style="${kind.isApproaching18Years() ? 'color: red;' : ''}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Allergie</td>
+                    <td th:text="${kind.allergie}" style="color: red; font-weight: bold"></td>
+                </tr>
+                <tr>
+                    <td>Ernaehrung</td>
+                    <td th:text="${kind.ernaehrung}" style="color: mediumspringgreen"></td>
+                </tr>
+                <tr>
+                    <td>Behinderung</td>
+                    <td th:text="${kind.behinderung}" style="color: mediumorchid"></td>
+                </tr>
+                <tr>
+                    <td>Einzugsdatum</td>
+                    <td th:text="${kind.einzug_datum}"></td>
+                </tr>
+                <tr>
+                    <td>Auszugsdatum</td>
+                    <td th:text="${kind.auszug_datum}"></td>
+                </tr>
+
+                <tr>
+                    <td>Beh&ouml;rden-Nr.</td>
+                    <td>
+                        <a class="linkButton" style="text-decoration:none"
+                           th:text="${kind.kindYouthWelfareOffice.youthWelfareOfficeId}"
+                           th:href="@{'/behoerde/showbehoerde/' + ${kind.kindYouthWelfareOffice.youthWelfareOfficeId}}">
+                            <i style="color: grey;" class="fa fa-edit"></i></a>
+                        <a class="linkButton" style="margin-left: 5px;"
+                           th:href="@{'/behoerde/editbehoerde/' + ${kind.kindYouthWelfareOffice.youthWelfareOfficeId}}">
+                            <i style="color: grey;" class="fa fa-edit"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Beh&ouml;rdenname</td>
+                    <td th:text="${kind.kindYouthWelfareOffice.youthWelfareOfficeName}"></td>
+                </tr>
+                <tr>
+                    <td>Bundesland</td>
+                    <td th:text="${kind.kindYouthWelfareOffice.youthWelfareOfficeState}"></td>
+                </tr>
+                <tr>
+                    <td>Religion</td>
+                    <td th:text="${kind.religion}"></td>
+                </tr>
+                <tr>
+                    <td>Betreuungsgrund</td>
+                    <td th:text="${kind.betreuungsgrund}"></td>
+                </tr>
+                <tr>
+                    <td>Geschwister</td>
+                    <td>
+                        <ul>
+                            <li th:each="sibling : ${kind.siblings}">
+                                <a th:href="@{'/kind/showkind/' + ${sibling.kindId}}">
+                                    <span th:text="${sibling.kindId}+ ' ' + ${sibling.kindVorname} + ' ' + ${sibling.kindNachname}"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Aktuelle Wohngruppe</td>
+                    <td>
+                         <span th:each="kindDetail : ${kind.kindDetails}" th:if="${kindDetail.aktiv}">
+                         <a th:text="${kindDetail.kindDetailWohngruppe.wohngruppenId} + ' ' + ${kindDetail.kindDetailWohngruppe.wohngruppenName}"
+                            th:href="@{'/wohngruppe/showwohngruppe/' + ${kindDetail.kindDetailWohngruppe.wohngruppenId}}">
+                         </a>
+                          <br th:if="${kindDetail.aktiv}">
+                         </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mitarbeiter für reisenden Kind</td>
+
+                    <td>
+                        <a th:text="${kind.mitarbeitereinzel}" th:if="${kind.mitarbeitereinzel != null}"
+                            th:href="@{'/mitarbeiter/showmitarbeiter/' + ${kind.mitarbeitereinzel.mitarbeiterId}}">
+                            <span th:text="${kind.mitarbeitereinzel.mitarbeiterId}+ ' ' + ${kind.mitarbeitereinzel.vorname} + ' ' + ${kind.mitarbeitereinzel.nachname}"></span>
+                        </a>
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+            <br/>
+            <br/>
+            <h2>Sorgeberechtigter&nbsp;<i class="fa fa-user"></i>:</h2>
+            <ul>
+                <li th:each="sorgeberechtiger : ${kind.sorgeberechtigerSet}">
+                    <span th:text="${sorgeberechtiger.sorgeberechtigerVorname}">Sorgeberechtiger Vorname</span>
+                    <span th:text="${sorgeberechtiger.sorgeberechtigerNachname}">Sorgeberechtiger Nachname</span>
+                </li>
+            </ul>
+
+            <h2>Wohngruppemitarbeiter: <i class="fa fa-home"></i>&nbsp;<i class="fa fa-user"></i></h2>
+            <ul>
+                <li th:each="wohngruppe : ${kind.kindDetails}">
+                    <a th:href="@{'/wohngruppe/showwohngruppe/' + ${wohngruppe.kindDetailWohngruppe.wohngruppenId}}">
+                        <span th:text="${wohngruppe.kindDetailWohngruppe.wohngruppenName}"></span>
+                    </a>
+                    <ul>
+                        <li th:each="mitarbeiter: ${wohngruppe.kindDetailWohngruppe.mitarbeiterDetailList}">
+                            <a th:href="@{'/mitarbeiter/showmitarbeiter/' +  ${mitarbeiter.mitarbeiterDetailMitarbeiter.mitarbeiterId }}">
+                                <span th:text="${mitarbeiter.mitarbeiterDetailMitarbeiter.vorname} + ' ' + ${mitarbeiter.mitarbeiterDetailMitarbeiter.nachname}"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <br/>
+</div>
+
+</body>
+</html>

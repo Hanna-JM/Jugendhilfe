@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title th:if="${mitarbeiterdetail.mitarbeiterDetailId == null}">Zuordnung Mitarbeiter - Wohngruppe anlegen</title>
+    <title th:unless="${mitarbeiterdetail.mitarbeiterDetailId == null}">Zuordnung Mitarbeiter - Wohngruppe aktualisieren</title>
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+    <h1 style="margin-left:1%" th:if="${mitarbeiterdetail.mitarbeiterDetailId == null}">Zuordnung Mitarbeiter - Wohngruppe anlegen <i class="fa fa-user"></i> <i class="fa fa-home"></i></h1>
+    <h1 style="margin-left:1%" th:unless="${mitarbeiterdetail.mitarbeiterDetailId == null}">Zuordnung Mitarbeiter - Wohngruppe aktualisieren <i class="fa fa-pencil-square-o"></i></h1>
+</div>
+
+
+<div class="container">
+    <form id="mitarbeiterDetailForm" th:action="@{/mitarbeiterdetail/savemitarbeiterdetail}" th:object="${mitarbeiterdetail}" method="post">
+        <p th:if="${error}" class="error-message" th:text="${error}"></p>
+        <div class="row" th:if="${mitarbeiterdetail != null && mitarbeiterdetail.mitarbeiterDetailId != null}">
+            <div class="col-25">
+                <label for="mitarbeiterDetailId">MitarbeiterDetailNr</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{mitarbeiterDetailId}" type="text" disabled id="mitarbeiterDetailId" name="mitarbeiterDetailId"
+                       placeholder="MitarbeiterDetailNr">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="mitarbeiter">Mitarbeiter</label>
+            </div>
+            <div class="col-75">
+                <select th:field="*{mitarbeiterDetailMitarbeiter}" id="mitarbeiter" name="mitarbeiter">
+                    <option value="">Bitte Mitarbeiter w&auml;hlen</option>
+                    <option th:each="mitarbeiter : ${mitarbeiterList}"
+                            th:value="${mitarbeiter.mitarbeiterId}"
+                            th:text="${mitarbeiter.mitarbeiterId} + ', ' + ${mitarbeiter.vorname} + ', ' + ${mitarbeiter.nachname}"></option>
+                </select>
+                <input type="hidden" th:field="*{mitarbeiterDetailId}"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="einsatzbeginn">Beginn des Einsatzes</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{einsatzBeginn}" type="date" id="einsatzbeginn" name="einsatzbeginn" placeholder="Beginn des Einsatzes">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="einsatzende">Ende des Einsatzes</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{einsatzEnde}" type="date" id="einsatzende" name="einsatzende" placeholder="Ende des Einsatzes">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="wohngruppe">Wohngruppe</label>
+            </div>
+            <div class="col-75">
+                <select th:field="*{mitarbeiterDetailWohngruppe}" id="wohngruppe" name="wohngruppe">
+                    <option value="">Bitte Wohngruppe w&auml;hlen</option>
+                    <option th:each="wohngruppe : ${wohngruppenList}"
+                            th:value="${wohngruppe.wohngruppenId}"
+                            th:text="${wohngruppe.wohngruppenId} + ', ' +
+                            ${wohngruppe.wohngruppenName}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <input type="submit" value="Speichern">
+        </div>
+<br><br>
+        <div  class="row">
+            <input id="btnResetMitarbeiterDetail" onclick="return confirm('Möchten Sie das Formular wirklich leeren?')" type="reset"
+                   class="standard-button btn2">
+        </div>
+    </form>
+</div>
+
+
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title>Kinderauswahl</title>
+</head>
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+<div layout:fragment="content">
+    <section class="wrapper">
+        <div class="row">
+            <br/>
+            <div>  </div>
+            <div style="margin-left: 20px ">
+                <a class="backButton" href="javascript:history.back()">
+                    <i style="margin: inherit" class="fa fa-backward"></i>
+                    <span style="margin: 2px 2px 1px 5px;">Zurück</span>
+                </a>
+            </div>
+            <div class="title-page">
+
+                <h1 style="margin-left:2%">Kinder zum aktualisieren ausw&auml;hlen <i class="fa fa-child"></i></h1>
+            </div>
+            <div class="addButton">
+                <a class="standard-button btn2" style="float:right; margin-right:2%;" th:href="@{'/kind/neueskind'}">
+                    <span style="font-size: 20px">Neues Kind anlegen</span>
+                    <i style="font-size: 20px" class="fa fa-plus"></i></a>
+            </div>
+            <br/><br/>
+
+            <form style="margin-left:2%" th:action="@{/kind/editkind}" method="get">
+
+                <label for="kindId" class="form-label">&nbsp;Wählen Sie ein Kind aus</label>
+                <select style="width:80%" th:name="kindId" id="kindId">
+                    <option th:each="kind : ${listKinder}" th:value="${kind.kindId}">
+                        <span th:text="${kind.kindVorname} + ' ' + ${kind.kindNachname}"></span>
+                    </option>
+                </select>
+                <button class="standard-button btn2" type="submit">Kind ausw&auml;hlen</button>
+            </form>
+
+            <br/><br/><br/>
+
+            <h2 style="margin-left:2%">&Uuml;bersicht der Kinder</h2>
+            <div layout:fragment="content">
+                <div class="col-sm-8">
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <!--         <th></th>-->
+                                <th>Vorname</th>
+                                <th>Nachname</th>
+                                <th>Geschlecht</th>
+                                <th>Einzugsdatum</th>
+                                <th>Auszugsdatum</th>
+                                <th>Beh&ouml;rde</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${listKinder.isEmpty()}">
+                                <td colspan="4"> keine Kinder vorhanden</td>
+                            </tr>
+                            <tr th:each="kind : ${listKinder}">
+                                <td th:text="${kind.kindVorname}"></td>
+                                <td th:text="${kind.kindNachname}"></td>
+                                <td th:text="${kind.kindGeschlecht}"></td>
+                                <td th:text="${kind.einzug_datum}"></td>
+                                <td th:text="${kind.auszug_datum}"></td>
+                                <td th:text="${kind.kindYouthWelfareOffice.youthWelfareOfficeName}"></td>
+                                <td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

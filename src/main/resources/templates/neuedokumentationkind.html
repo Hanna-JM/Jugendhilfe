@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title>neues Dokument erstellen</title>
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+    <h1 style="margin-left:2%">Dokumentation für Minderjährige erstellen  <i class="fa fa-child"></i></h1>
+    <p style="margin-left:2%" th:text="${#temporals.format(localDateTime, 'dd.MM.yyyy HH:mm')}"></p>
+</div>
+
+<div class="container">
+     <form id="dokumentationForm" th:action="@{/dokumentation/savedokumentationkind}" th:object="${dokumentation}" method="post">
+        <div th:if="${not #strings.isEmpty(error)}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
+
+<!--         <div>-->
+<!--             <label for="kind">Kind:</label>-->
+<!--             <select id="kind" name="kind.kindId">-->
+<!--                 <option value="">Bitte ein Kind auswählen</option>-->
+<!--                 <th:block th:each="kind : ${kinder}">-->
+<!--                     <option th:value="${kind.kindId}" th:text="${kind.kindVorname} + ' ' + ${kind.kindNachname}" />-->
+<!--                 </th:block>-->
+<!--             </select>-->
+<!--         </div>-->
+
+         <div class="row">
+             <div class="col-25">
+                 <label for="kind">Kind:</label>
+             </div>
+             <div class="col-75">
+                 <select id="kind" name="kind.kindId">
+                     <option  value="">Bitte Kind ausw&auml;hlen</option>
+                     <option th:each="kind : ${kinder}"
+                             th:value="${kind.kindId}"
+                             th:text="${kind.kindVorname } + ', ' + ${kind.kindNachname} "></option>
+                 </select>
+             </div>
+         </div>
+
+        <div class="row">
+            <div class="col-25">
+            <label for="dokumentationtyp">Art der Dokumentation</label>
+            </div>
+            <div class="col-75">
+            <select th:field="*{dokumentationtyp}" id="dokumentationtyp" name="dokumentationtyp">
+                <option value="">Bitte Dokumentationstyp ausw&auml;hlen</option>
+                <option th:each="optionDokumentationTyp : ${optionenDokumentationTyp}" th:value="${optionDokumentationTyp}" th:text="${optionDokumentationTyp}"></option>
+            </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="dokumentationtext">Dokumentation</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{dokumentationtext}" type="text" minlength="0" id="dokumentationtext" name="dokumentationtext"
+                       placeholder="Dokumentation">
+            </div>
+        </div>
+
+        <br/>
+         <br/>
+        <div class="row">
+            <input type="submit" value="Speichern">
+        </div>
+        <br>
+         <br>
+         <div  class="row">
+             <input id="btnResetDokuZuKind" onclick="return confirm('Möchten Sie das Formular wirklich leeren?')" type="reset"
+                    class="standard-button btn2">
+         </div>
+    </form>
+</div>
+
+<br>
+<br>
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+
+
+</body>
+</html>
+
+

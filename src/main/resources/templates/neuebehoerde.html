@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title th:if="${youthWelfareOffice.youthWelfareOfficeId == null}">neue Behoerde anlegen</title>
+    <title th:unless="${youthWelfareOffice.youthWelfareOfficeId == null}">Behoerde aktualisieren</title>
+
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+
+    <h1 style="margin-left:2%" th:if="${youthWelfareOffice.youthWelfareOfficeId == null}" id="headlineAnlegenBehoerde">Behoerde anlegen</h1>
+    <h1 style="margin-left:2%" th:unless="${youthWelfareOffice.youthWelfareOfficeId == null}" id="headlineEditierenBehoerde">Behoerde
+        aktualisieren </h1>
+</div>
+
+<a class="standard-button btn2" th:href="@{'/behoerde/behoerdenliste'}">
+    <i style="font-size: 20px; margin-right:5px" class="fa fa-list"></i><span style="font-size: 20px">Liste aller Behoerden</span>
+</a>
+
+<div class="container">
+    <form id="behoerdeForm" th:action="@{/behoerde/savebehoerde}" th:object="${youthWelfareOffice}"
+          method="post">
+        <div th:if="${not #strings.isEmpty(error)}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="youthWelfareOfficeName">Name der Beh&ouml;rde</label>
+            </div>
+            <div class="col-75">
+             <input th:field="*{youthWelfareOfficeName}" type="text" minlength="0" id="youthWelfareOfficeName"
+                       name="youthWelfareOfficeName" placeholder="Name der Beh&ouml;rde">
+
+                <input type="hidden" th:field="*{youthWelfareOfficeId}"
+                       th:value="${youthWelfareOffice.youthWelfareOfficeId}"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="youthWelfareOfficeStreet">Strasse</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{youthWelfareOfficeStreet}" type="text" id="youthWelfareOfficeStreet" name="youthWelfareOfficeStreet" placeholder="Strasse"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="youthWelfareOfficeCityCode">Postleitzahl</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{youthWelfareOfficeCityCode}" type="text" id="youthWelfareOfficeCityCode" name="youthWelfareOfficeCityCode" placeholder="PLZ"/>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-25">
+                <label for="youthWelfareOfficeCity">Ort</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{youthWelfareOfficeCity}" type="text" id="youthWelfareOfficeCity" name="youthWelfareOfficeCity" placeholder="Ort"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="youthWelfareOfficeState">Bundesland</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{youthWelfareOfficeState}" type="text" id="youthWelfareOfficeState" name="youthWelfareOfficeState" placeholder="Bundesland"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="youthWelfareOfficeCountry">Land</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{youthWelfareOfficeCountry}" type="text" id="youthWelfareOfficeCountry" name="youthWelfareOfficeCountry" placeholder="Land"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="youthWelfareOfficeContactPerson">Ansprechpartner</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{youthWelfareOfficeContactPerson}" type="text" id="youthWelfareOfficeContactPerson" name="youthWelfareOfficeContactPerson" placeholder="Ansprechpartner"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="youthWelfareOfficeContactPhone">Telefon</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{youthWelfareOfficeContactPhone}" type="text" id="youthWelfareOfficeContactPhone" name="youthWelfareOfficeContactPhone" placeholder="Telefon"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="youthWelfareOfficeContactMail">Email</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{youthWelfareOfficeContactMail}" type="text" id="youthWelfareOfficeContactMail" name="youthWelfareOfficeContactMail" placeholder="Email"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="youthWelfareOfficeHint">Hinweise</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{youthWelfareOfficeHint}" type="text" id="youthWelfareOfficeHint" name="youthWelfareOfficeHint" placeholder="Hinweise"/>
+            </div>
+        </div>
+        <br/>
+
+
+
+        <br/>
+
+        <br/>
+
+
+        <div class="row">
+            <input type="submit" value="Speichern">
+        </div>
+        <br><br>
+        <div th:if="${youthWelfareOffice.youthWelfareOfficeId == null}" class="row">
+            <input id="btnResetYouthWelfareOffice" onclick="return confirm('Möchten Sie das Formular wirklich leeren?')" type="reset"
+                   class="standard-button btn2">
+        </div>
+
+<!--        <a id="btnLoeschenYouthWelfareOffice" class="linkButton"-->
+<!--           th:href="@{'/behoerde/deletebehoerde/' + ${youthWelfareOffice.youthWelfareOfficeId}}">-->
+<!--            <span>L&ouml;schen</span><i style="color: red;" class="fa fa-trash"></i></a>-->
+        <a id="btnLoeschenYouthWelfareOffice" class="linkButton" th:href="@{'/behoerde/deletebehoerde/' + ${youthWelfareOffice.youthWelfareOfficeId}}" style="margin-left: 2%; text-decoration:none"
+           th:data-confirm-delete="|Sind Sie sicher, dass Sie die Beh&ouml;rde ${youthWelfareOffice.youthWelfareOfficeId}, ${youthWelfareOffice.youthWelfareOfficeName} loeschen moechten?|"
+           onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+            <span>Beh&ouml;rde l&ouml;schen</span><i style="color: grey; margin-left: 5px;" class="fa fa-trash"></i>
+        </a>
+        <br>
+        <br>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+if (window.location.href.indexOf("behoerde/editbehoerde") > -1) {
+document.getElementById("btnLoeschenYouthWelfareOffice").style.display = "";
+document.getElementById("btnResetYouthWelfareOffice").style.display = "none";
+document.getElementById("optionfurtherEducationMitarbeiterDefault").style.display = "none";
+<!--document.getElementById("headlineAnlegenBehoerde").style.display = "none";-->
+<!--document.getElementById("headlineEditierenBehoerde").style.display = "";-->
+
+}
+else {
+document.getElementById("btnLoeschenYouthWelfareOffice").style.display = "none";
+document.getElementById("btnResetYouthWelfareOffice").style.display = "";
+document.getElementById("optionfurtherEducationMitarbeiterDefault").style.display = "";
+<!-- siehe header umgestellt auf thymeleaf -->
+}
+</script>
+
+
+
+<br>
+<br>
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+
+<br>
+<br>
+
+
+</body>
+</html>
+
+

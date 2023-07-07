@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title th:if="${wohngruppe.wohngruppenId == null}">Wohngruppe anlegen</title>
+    <title th:unless="${wohngruppe.wohngruppenId == null}">Wohngruppe aktualisieren</title>
+</head>
+
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+    <h1 style="margin-left:2%" th:if="${wohngruppe.wohngruppenId == null}">Wohngruppe anlegen <i class="fa fa-home"></i>
+    </h1>
+    <h1 style="margin-left:2%" th:unless="${wohngruppe.wohngruppenId == null}">Wohngruppe aktualisieren<i
+            class="fa fa-pencil-square-o"></i></h1>
+</div>
+
+<div class="container">
+    <form id="wohngruppenForm" th:action="@{/wohngruppe/savewohngruppe}" th:object="${wohngruppe}" method="post">
+        <div th:if="${not #strings.isEmpty(error)}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="wohngruppenName">Name der Wohngruppe</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{wohngruppenName}" type="text" minlength="0" id="wohngruppenName"
+                       name="wohngruppenName" placeholder="Name der Wohngruppe" required>
+                <input type="hidden" th:field="*{wohngruppenId}"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="strasse">Strasse</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{strasse}" type="text" minlength="0" id="strasse" name="strasse"
+                       placeholder="Strasse">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="plz">Plz</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{plz}" type="text" minlength="0" id="plz" name="plz" placeholder="Plz">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="ort">Ort</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{ort}" type="text" minlength="0" id="ort" name="ort" placeholder="Ort">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="anzahlPlaetze">Anzahl Plaetze</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{anzahlPlaetze}" type="number" minlength="1" id="anzahlPlaetze" name="anzahlPlaetze"
+                       placeholder="Anzahl Plaetze" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="tagessatz">Tagessatz</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{tagessatz}" type="number" id="tagessatz" name="tagessatz" placeholder="Tagessatz" required>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <input type="submit" value="Speichern">
+        </div>
+        <br><br>
+        <div th:if="${wohngruppe.wohngruppenId == null}" class="row">
+            <input id="btnResetWohngruppe" onclick="return confirm('Möchten Sie das Formular wirklich leeren?')"
+                   type="reset"
+                   class="standard-button btn2">
+        </div>
+    </form>
+</div>
+
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zurück</span></a>
+</div>
+
+</body>
+</html>

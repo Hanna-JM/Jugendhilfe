@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title>alle Wohngruppen anzeigen </title>
+</head>
+
+<body>
+<h2>Mitarbeiter zur bestimmten Wohngruppe hinzufügen</h2>
+
+<form th:action="@{/wohngruppe/wohngruppen/mitarbeiter}" method="post" th:object="${wohngruppe}">
+    <label class="form-label">Bitte einen Mitarbeiter auswählen</label> </br> </br>
+    <input type="hidden" name="wohngruppenId" th:value="${wohngruppenId}" />
+    <select name="mitarbeiterId">
+        <option th:each="mitarbeiter : ${mitarbeiterList}" th:value="${mitarbeiter.mitarbeiterId}" th:text="${mitarbeiter.vorname} + ' ' + ${mitarbeiter.nachname}"></option>
+    </select>
+    <button type="submit">Add Mitarbeiter</button>
+</form>
+
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Mitarbeiter</th>
+    </tr>
+    <tr th:each="wohngruppe : ${wohngruppen}">
+        <td th:text="${wohngruppe.wohngruppenId}"></td>
+        <td th:text="${wohngruppe.wohngruppenName}"></td>
+        <td>
+            <ul>
+                <li th:each="mitarbeiter : ${WohngruppeMitarbeiter}" th:text="${mitarbeiter.nachname}"></li>
+                <li th:each="mitarbeiter : ${WohngruppeMitarbeiter}" th:text="${mitarbeiter.nachname}"></li>
+            </ul>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

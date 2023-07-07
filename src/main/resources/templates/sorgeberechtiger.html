@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+
+
+    <title>Sorgeberechtiger</title>
+</head>
+
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+<div layout:fragment="content">
+    <section class="wrapper">
+        <div class="row">
+            <br/>
+            <div></div>
+            <div style="margin-left: 20px ">
+                <a class="backButton" href="javascript:history.back()">
+                    <i style="margin: inherit" class="fa fa-backward"></i>
+                    <span style="margin: 2px 2px 1px 5px;">Zurück</span>
+                </a>
+            </div>
+            <div class="title-page">
+                <h1 style="margin-left:2%">Sorgeberechtiger Stammdaten <i class="fa fa-user"></i></h1>
+            </div>
+            <br/>
+
+            <form class="search" th:action="@{/sorgeberechtiger/}" method="get">
+                <br/>
+                <div>
+                    <div style="width:30%; float:left">
+                        <input id="txtsearch" type="text" class="form-control"
+                               placeholder="Vorname, Nachname,Addresse,Datum,..." name="keyword"/>
+                    </div>
+                    <div style="float:left; margin-left:5px;">
+                        <button class="standard-button btn2" style="margin-top: 0px">Suchen</button>
+                    </div>
+                </div>
+                <br/>
+            </form>
+            <br/><br/>
+            <div class="respTab">
+                <div class="panel-body">
+                    <!-- Display success message -->
+                    <div th:if="${success}" class="alert alert-success">
+                        <p style="font-size: larger;color: lawngreen;" align="center"
+                           th:text="#{success.message.deleteSorgeberechtigter}"></p>
+                    </div>
+
+                    <!-- Display error message -->
+                    <div th:if="${s_error}" class="alert alert-danger">
+                        <p style="font-size: larger;color: red;" align="center"
+                           th:text="#{error.message.deleteSorgeberechtigter}"></p>
+                    </div>
+
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Anrede</th>
+                                <th>Vorname</th>
+                                <th>Nachname</th>
+                                <th>Geburtsdatum</th>
+                                <th>Strasse</th>
+                                <th>Haus&nbsp;Nr.</th>
+                                <th>PLZ</th>
+                                <th>Wohnort</th>
+                                <th>Email</th>
+                                <th>Telefon</th>
+                                <th>Vewandtschaft</th>
+                                <th>Besuchsrecht</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:if="${sorgeberechtigerList.isEmpty()}">
+                                <td colspan="4"> keine Sorgeberechtiger vorhanden</td>
+                            </tr>
+                            <tr th:each="sorgeberechtiger : ${sorgeberechtigerList}">
+                                <td th:text="${sorgeberechtiger.sorgeberechtigerId}"></td>
+                                <td th:text="${sorgeberechtiger.anrede}"></td>
+                                <td th:text="${sorgeberechtiger.sorgeberechtigerVorname}"></td>
+                                <td th:text="${sorgeberechtiger.sorgeberechtigerNachname}"></td>
+                                <td th:text="${#temporals.format(sorgeberechtiger.geburtsdatum,'dd.MM.yyyy')}"></td>
+                                <td th:text="${sorgeberechtiger.strasse}"></td>
+                                <td th:text="${sorgeberechtiger.hausNummer}"></td>
+                                <td th:text="${sorgeberechtiger.plz}"></td>
+                                <td th:text="${sorgeberechtiger.ort}"></td>
+                                <td th:text="${sorgeberechtiger.email}"></td>
+                                <td th:text="${sorgeberechtiger.telefon}"></td>
+                                <td th:text="${sorgeberechtiger.vewandtschaft}"></td>
+                                <td th:text="${sorgeberechtiger.besuchsrecht}"></td>
+                                <td>
+                                    <!--                             <a class="linkButton" th:href="@{'/kind/editkind/' + ${kind.kindId}}">-->
+                                    <a class="linkButton"
+                                       th:href="@{/sorgeberechtiger/editsorgeberechtiger(sorgeberechtigerId=${sorgeberechtiger.sorgeberechtigerId})}">
+                                        <span>Edit</span><i style="color: green;" class="fa fa-edit"></i></a>
+                                </td>
+                                <td>
+
+                                    <a class="linkButton"
+                                       th:href="@{'/sorgeberechtiger/deletesorgeberechtiger/' + ${sorgeberechtiger.sorgeberechtigerId}}"
+                                       th:data-confirm-delete="|Sind Sie sicher, dass Sie den Sorgeberechtigter ${sorgeberechtiger.sorgeberechtigerId},
+                                    ${sorgeberechtiger.sorgeberechtigerVorname} ${sorgeberechtiger.sorgeberechtigerNachname} löschen wollen?|"
+                                       onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                                        <span>l&ouml;schen</span><i style="color: red; margin-left: 5px;"
+                                                                    class="fa fa-trash"></i>
+                                    </a>
+                                    <!--                                <a class="linkButton"-->
+                                    <!--                                   th:href="@{'/sorgeberechtiger/deletesorgeberechtiger/' + ${sorgeberechtiger.sorgeberechtigerId}}">-->
+                                    <!--                                    <span>Delete</span><i style="color: red;" class="fa fa-trash"></i>-->
+                                    <!--                                </a>-->
+                                </td>
+
+
+                            </tr>
+                        </table>
+
+                        <br/><br/>
+                        <h2>Sorgeberechtiger anlegen</h2>
+                        <div class="container">
+                            <!--
+                                                   <form action="#" th:action="@{/sorgeberechtiger/addsorgeberechtiger}"-->
+                            <form action="#" th:action="@{/sorgeberechtiger/savesorgeberechtiger}"
+                                  th:object="${sorgeberechtiger}" method="post">
+
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="anrede">Anrede</label>
+                                    </div>
+
+                                    <div class="col-75">
+                                        <select th:field="*{anrede}" id="anrede" name="anrede">
+                                            <option value="">Bitte w&auml;hlen</option>
+                                            <option th:each="optionAnrede : ${optionenAnredeSorgeberechtigter}"
+                                                    th:value="${optionAnrede}" th:text="${optionAnrede}"></option>
+                                        </select>
+                                        <input type="hidden" th:field="*{sorgeberechtigerId}"/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="sorgeberechtigerVorname" class="form-label">Vorname</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <input type="text" th:field="*{sorgeberechtigerVorname}" class="form-control"
+                                               id="sorgeberechtigerVorname" name="sorgeberechtigerVorname"
+                                               placeholder="Vorname" required/>
+                                        <input type="hidden" th:field="*{sorgeberechtigerId}"/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="sorgeberechtigerNachname" class="form-label">Nachname</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <input type="text" th:field="*{sorgeberechtigerNachname}" class="form-control"
+                                               id="sorgeberechtigerNachname" name="sorgeberechtigerNachname"
+                                               placeholder="Nachname" required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="geburtsdatum" class="form-label">Geburtsdatum</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <input type="date" th:field="*{geburtsdatum}"
+                                               class="form-control" id="geburtsdatum" name="geburtsdatum"
+                                               placeholder="Geburtsdatum" required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="strasse" class="form-label">Stra&szlig;e</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <input type="text" th:field="*{strasse}" class="form-control"
+                                               id="strasse" name="strasse"
+                                               placeholder="Stra&szlig;e"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="haus_nummer" class="form-label">Hausnummer</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <input type="text" th:field="*{hausNummer}" class="form-control"
+                                               id="haus_nummer" name="haus_nummer"
+                                               placeholder="Hausnummer"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="plz" class="form-label">PLZ</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <input type="text" th:field="*{plz}" class="form-control"
+                                               id="plz" name="plz"
+                                               placeholder="Postleizahl"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="ort" class="form-label">Wohnort</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <input type="text" th:field="*{ort}" class="form-control"
+                                               id="ort" name="ort"
+                                               placeholder="Ort"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="email" class="form-label">Email</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <input type="text" th:field="*{email}" class="form-control"
+                                               id="email" name="email"
+                                               placeholder="Email"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="telefon" class="form-label">Telefon</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <input type="text" th:field="*{telefon}" class="form-control"
+                                               id="telefon" name="telefon"
+                                               placeholder="Telefon"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="vewandtschaft" class="form-label">Vewandtschaft</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <input type="text" th:field="*{vewandtschaft}" class="form-control"
+                                               id="vewandtschaft" name="vewandtschaft"
+                                               placeholder="Vewandtschaft"/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-25">
+                                        <label for="besuchsrecht" class="form-label">Besuchsrecht</label>
+                                    </div>
+                                    <div class="col-75">
+                                        <select th:field="*{besuchsrecht}" class="form-control"
+                                                name="besuchsrecht" id="besuchsrecht" required>
+                                            <option value="" selected hidden>Bitte wählen Sie...</option>
+                                            <option th:value="Ja" th:text="Ja">Ja</option>
+                                            <option th:value="Kein" th:text="Kein">Kein</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <br/><br/>
+                                <div style="padding-left: 40%">
+                                    <button type="submit" class="standard-button btn2">Speichern</button>
+                                    <!--         <button type="reset" class="linkButton">Abbrechen</button>-->
+                                    <!--         <a href="/kind/" class="linkButton">Abbrechen</a>-->
+
+
+                                    <button type="button" class="standard-button btn2"
+                                            onclick="location.href='/sorgeberechtiger/'">
+                                        Abbrechen
+                                    </button>
+
+                                    <input id="btnResetSorgeberechtiger"
+                                           onclick="return confirm('Möchten Sie das Formular wirklich leeren?')"
+                                           type="reset"
+                                           class="standard-button btn2">
+
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<div th:fragment="navbar">
+    <div class="topnav" id="Topnav" style="background-color: #008CBA">
+
+        <div class="dropdown">
+            <button class="dropbtn">Wohngruppen
+                <i class="fa fa-caret-down"></i>
+            </button>
+
+            <div class="dropdown-content">
+                <a href="#">Wohngruppen &Uuml;bersicht</a>
+                <a th:href="@{'/wohngruppe/neuewohngruppe'}">Wohngruppe anlegen</a>
+<!--                <a href="#">Wohngruppen anlegen</a>-->
+                <a href="#">Wohngruppen &auml;ndern</a>
+                <a href="#">Wohngruppen l&ouml;schen</a>
+                <a th:href="@{'/wohngruppe/wohngruppenliste'}">Wohngruppen anzeigen</a>
+<!--                <a href="#">Wohngruppen anzeigen</a>-->
+                <a href="#">Wohngruppen analysieren</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Mitarbeiter
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+<!--                <a href="#">Mitarbeiter &Uuml;bersicht</a>-->
+                <a th:href="@{'/mitarbeiter/neuermitarbeiter'}">Mitarbeiter anlegen</a>
+                <a th:href="@{'/mitarbeiterdetail/neuermitarbeiterdetail'}">Mitarbeiter zu Wohngruppe</a>
+                <a th:href="@{'/mitarbeiterdetail/mitarbeiterdetailliste'}">Mitarbeiter in WG anzeigen</a>
+                <a th:href="@{'/dokumentationma/neuedokumentationmitarbeiter'}">Mitarbeiter-Dokumentation anlegen</a>
+<!--                <a href="#">Mitarbeiter &auml;ndern</a>-->
+<!--                <a href="#">Mitarbeiter l&ouml;schen</a>-->
+                <a th:href="@{'/mitarbeiter/mitarbeiterliste'}">Mitarbeiter anzeigen</a>
+<!--                <a href="#">Mitarbeiter analysieren</a>-->
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">Fortbildung
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#">Fortbildung &Uuml;bersicht</a>
+                <a th:href="@{'/fortbildung/neuefortbildung'}">Fortbildung f&uuml;r MA anlegen</a>
+                <a href="#">Fortbildung &auml;ndern</a>
+                <a href="#">Fortbildung l&ouml;schen</a>
+                <a th:href="@{'/fortbildung/fortbildungliste'}">Fortbildungen anzeigen</a>
+                <a href="#">Fortbildung analysieren</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">Beh&ouml;rden
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#">Beh&ouml;rden &Uuml;bersicht</a>
+                <a th:href="@{'/behoerde/neuebehoerde'}">Beh&ouml;rde anlegen</a>
+                <a href="#">Beh&ouml;rden &auml;ndern</a>
+                <a href="#">Beh&ouml;rden l&ouml;schen</a>
+                <a th:href="@{'/behoerde/behoerdenliste'}">Beh&ouml;rden anzeigen</a>
+                <a href="#">Beh&ouml;rden analysieren</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">Kinder
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#">Kinder &Uuml;bersicht</a>
+                <a th:href="@{'/kind/neueskind'}">Kind anlegen</a>
+                <a th:href="@{'/kind/kinderauswahl'}">Kind &auml;ndern</a>
+                <a th:href="@{'/kind/'}">Kinder anzeigen</a>
+                <a th:href="@{'/kinddetail/neueskinddetail'}">Kind zu Wohngruppe</a>
+                <a th:href="@{'/kinddetail/kinddetailliste'}">Kinder in WG anzeigen</a>
+                <a th:href="@{'/sorgeberechtiger/'}">Sorgeberechtigter anlegen/zeigen</a>
+                <a href="#">Kinder analysieren</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Dokumentation
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#">Dokumentation &Uuml;bersicht</a>
+<!--                <a href="#">Dokumentation anlegen</a>-->
+                <a th:href="@{'/dokumentation/neuedokumentationkind'}">Dokumentation für Minderjährige anlegen</a>
+                <a th:href="@{'/dokumentationma/neuedokumentationmitarbeiter'}">Dokumentation für Mitarbeiter anlegen</a>
+                <a href="#">Dokumentation &auml;ndern</a>
+                <a href="#">Dokumentation l&ouml;schen</a>
+<!--                <a href="#">Dokumentation anzeigen</a>-->
+                <a th:href="@{'/dokumentation/dokumentationlistekind'}">Dokumentation für Minderjährige anzeigen</a>
+                <a th:href="@{'/dokumentationma/dokumentationlistemitarbeiter'}">Dokumentation für Mitarbeiter anzeigen</a>
+                <a href="#">Dokumentation analysieren</a>
+            </div>
+        </div>
+
+
+        <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="collapseBurger()">&#9776;</a>
+    </div>
+
+</div>
+

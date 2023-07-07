@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title>Dokumentationen anzeigen</title>
+</head>
+
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+<div class="title-page">
+    <h1 style="margin-left:2%">Liste aller Dokumentationen für Mitarbeiter  <i class="fa fa-user"></i></h1>
+</div>
+
+<form class="search" action="/dokumentationma/dokumentationlistemitarbeiter" method="get">
+    <div>
+        <div style="width:40%; float:left">
+            <input id="txtsearch" type="text" class="form-control"
+                   placeholder="Dok-Nr., Datum, Dok-Type... " name="keyword"/>
+        </div>
+        <div style="float:left; margin-left:5px;">
+            <button class="standard-button btn2" style="margin-top: 0px">Suchen</button>
+        </div>
+    </div>
+</form>
+
+<br/>
+<br/>
+<br/>
+
+<div class="respTab">
+    <table class="table" id="listDokumentMATabelle">
+        <thead class="thead-dark">
+        <tr>
+            <th style="width:5%">Dok-Nr</th>
+            <th>Dok-Datum</th>
+            <th>Mitarbeiter</th>
+            <th>Dok-Typ</th>
+            <th>Dok-Text</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${listDokumentation.isEmpty()}">
+            <td colspan="4"> keine Dokumentationen vorhanden</td>
+        </tr>
+        <tr th:each="dokumentationma :${listDokumentation}"
+            th:classappend="${dokumentationma.dokumentationtyp == 'Eskalation'} ? 'red-border'">
+            <td th:text="${dokumentationma.dokumentationId}"></td>
+<!--            <td th:text="${dokumentation.dokumentationdatum}"></td>-->
+            <td th:text="${#temporals.format(dokumentationma.dokumentationdatum, 'dd.MM.yyyy HH:mm')}"></td>
+<!--            <td th:text="${dokumentationma.mitarbeiter}"></td>-->
+            <td th:text="${dokumentationma.mitarbeiter.mitarbeiterId} + ', ' + ${dokumentationma.mitarbeiter.vorname} + ', ' + ${dokumentationma.mitarbeiter.nachname}"></td>
+            <td th:text="${dokumentationma.dokumentationtyp}"></td>
+            <td th:text="${dokumentationma.dokumentationtext}"></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+<br>
+<br>
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit"  class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zurück</span></a>
+</div>
+<br>
+<br>
+</body>
+</html>

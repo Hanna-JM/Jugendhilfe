@@ -1,0 +1,38 @@
+
+
+Namenskonvention
+================
+
+### Java + Thymeleaf + JavaScript + HTML - Bereich:
+
+es werden für den User sichtbare Texte und Label in deutscher Sprache verwendet. Bezeichner werden in englischer Sprache eingesetzt,
+i.d.R. ist dies auch der Fall bei Frameworks/Interfaces, deren Methoden ebenfalls zumeist in englischer Sprache gehalten sind.
+
+der Bezug zur Entity/Klasse/Tabelle wird dem Bezeichner vorangestellt, es werden aussagekräftige Bezeichner im camelCase verwendet für:
+
+Klassen, Variablen, Methoden/Funktionen, HTML-Elemente, sonstige Bezeichner
+
+
+Beispiele:
+
+Klasse - EmployeeController
+
+Variable - employeePrename
+
+HTML-Element - <form id="employeeForm">
+
+Thymeleaf - th:field="*{employeeLastname}"
+
+
+Ausnahme für Methoden im Sinne von sprechenden Bezeichnern kann der Bezug auch hinten angestellt werden:
+
+Methode - saveEmployee()
+
+
+Ausnahme für HTML-Dateien alles in Kleinbuchstaben, im Sinne von sprechenden Bezeichnern kann der Bezug auch hinten angestellt werden:
+
+HTML-Datei - newemployee.html
+
+
+
+

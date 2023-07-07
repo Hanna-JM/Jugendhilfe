@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+</head>
+
+
+
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+<div class="title-page">
+    <h1 style="margin-left:2%">Wohngruppe Stammdaten  <i class="fa fa-home"></i></h1>
+    <div style="position: relative;">
+        <img th:if="${wohngruppe.wohngruppenId == 1}" src="/static/images/driveway-3088488_1280.jpg" alt="Luxury Home" style="position: absolute; top: 0; right: 0; width: 200px; height: 200px;">
+        <img th:if="${wohngruppe.wohngruppenId == 2}" src="/static/images/luxury-home-2409529_1280.jpg" alt="Luxury Home" style="position: absolute; top: 0; right: 0; width: 200px; height: 200px;">
+        <div class="respTab">
+        </div>
+        <table class="table" id="listWohngruppenTabelle">
+            <tbody>
+            <tr>
+                <td style="width:20%">WohngruppeNr</td>
+                <td th:text="${wohngruppe.wohngruppenId}"></td>
+            </tr>
+            <tr>
+                <td>Wohngruppenname</td>
+                <td th:text="${wohngruppe.wohngruppenName}"></td>
+            </tr>
+            <tr>
+                <td>Anzahl Plätze</td>
+                <td th:text="${wohngruppe.anzahlPlaetze}"></td>
+            </tr>
+            <tr>
+                <td>Tagessatz</td>
+                <td th:text="${wohngruppe.tagessatz}"></td>
+            </tr>
+            <tr>
+                <td>Strasse</td>
+                <td th:text="${wohngruppe.strasse}"></td>
+            </tr>
+            <tr>
+                <td>Postleitzahl</td>
+                <td th:text="${wohngruppe.plz}"></td>
+            </tr>
+            <tr>
+                <td>Ort</td>
+                <td th:text="${wohngruppe.ort}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+<br>
+<a id="btnLoeschenWohngruppe" style="margin-left: 20px; text-decoration:none"
+   th:href="@{'/wohngruppe/deletewohngruppe/' + ${wohngruppe.wohngruppenId}}"
+   th:data-confirm-delete="|Sind Sie sicher, dass Sie die Wohngruppe ${wohngruppe.wohngruppenId}, ${wohngruppe.wohngruppenName} löschen wollen?|"
+   onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+    <span>WG l&ouml;schen</span><i style="color: red; margin-left: 5px;" class="fa fa-trash"></i>
+</a>
+<br>
+<br>
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zurück</span></a>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+
+    <title>ausgew&auml;hlte Beh&ouml;rde anzeigen</title>
+
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+    <h1 style="margin-left:2%">Beh&ouml;rden Stammdaten</h1>
+</div>
+
+
+<div class="respTab">
+    <table class="table" id="listBehoerdenTabelle">
+        <tbody>
+
+        <tr > <td style="width:20%">Beh&ouml;rdennummer</td>   <td th:text="${youthWelfareOffice.youthWelfareOfficeId}"></td> </tr>
+        <tr >  <td>Beh&ouml;rde</td>  <td th:text="${youthWelfareOffice.youthWelfareOfficeName}"></td> </tr>
+        <tr >  <td>Strasse</td>     <td th:text="${youthWelfareOffice.youthWelfareOfficeStreet}"></td> </tr>
+        <tr >  <td>Plz</td>     <td th:text="${youthWelfareOffice.youthWelfareOfficeCityCode}"></td> </tr>
+        <tr >  <td>Ort</td>     <td th:text="${youthWelfareOffice.youthWelfareOfficeCity}"></td> </tr>
+        <tr >  <td>Bundesland</td>     <td th:text="${youthWelfareOffice.youthWelfareOfficeState}"></td> </tr>
+        <tr >  <td>Land</td>     <td th:text="${youthWelfareOffice.youthWelfareOfficeCountry}"></td> </tr>
+        <tr >  <td>Ansprechpartner</td>     <td th:text="${youthWelfareOffice.youthWelfareOfficeContactPerson}"></td> </tr>
+        <tr >  <td>Mail</td>     <td th:text="${youthWelfareOffice.youthWelfareOfficeContactMail}"></td> </tr>
+        <tr >  <td>Telefon</td>     <td th:text="${youthWelfareOffice.youthWelfareOfficeContactPhone}"></td> </tr>
+        <tr >  <td>Hinweise</td>     <td th:text="${youthWelfareOffice.youthWelfareOfficeHint}"></td> </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+<br>
+<br>
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+<br><br>
+<a id="btnLoeschenShowBehoerde" class="linkButton" th:href="@{'/behoerde/deletebehoerde/' + ${youthWelfareOffice.youthWelfareOfficeId}}" style="margin-left: 2%; text-decoration:none"
+   th:data-confirm-delete="|Sind Sie sicher, dass Sie die Beh&ouml;rde ${youthWelfareOffice.youthWelfareOfficeId}, ${youthWelfareOffice.youthWelfareOfficeName} loeschen moechten?|"
+   onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+    <span>Beh&ouml;rde l&ouml;schen</span><i style="color: grey; margin-left: 5px;" class="fa fa-trash"></i>
+</a>
+
+
+<a class="linkButton" style="margin-left: 20px; text-decoration:none" th:href="@{'/behoerde/editbehoerde/' + ${youthWelfareOffice.youthWelfareOfficeId}}">
+    <span>Beh&ouml;rde bearbeiten</span><i style="color: grey; margin-left: 5px;" class="fa fa-edit"></i></a>
+</body>
+</html>

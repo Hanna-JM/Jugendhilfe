@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title>einen ausgew&auml;hlten Mitarbeiter anzeigen</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/images/R.jpg">
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+
+    <h1 style="margin-left:2%">Mitarbeiter Stammdaten  <i class="fa fa-user"></i></h1>
+</div>
+
+
+<div class="respTab">
+    <table class="table" id="listMitarbeiterTabelle">
+        <tbody>
+
+        <tr>
+            <td style="width:20%">Personalnummer</td>
+            <td th:text="${mitarbeiter.mitarbeiterId}"></td>
+        </tr>
+        <tr>
+            <td>Anrede</td>
+            <td th:text="${mitarbeiter.anrede}"></td>
+        </tr>
+        <tr>
+            <td>Vorname</td>
+            <td th:text="${mitarbeiter.vorname}"></td>
+        </tr>
+        <tr>
+            <td>Nachname</td>
+            <td th:text="${mitarbeiter.nachname}"></td>
+        </tr>
+        <tr>
+            <td>Strasse</td>
+            <td th:text="${mitarbeiter.strasse}"></td>
+        </tr>
+        <tr>
+            <td>Postleitzahl</td>
+            <td th:text="${mitarbeiter.plz}"></td>
+        </tr>
+        <tr>
+            <td>Ort</td>
+            <td th:text="${mitarbeiter.ort}"></td>
+        </tr>
+        <tr>
+            <td>Geburtstag</td>
+            <td th:text="${#temporals.format(mitarbeiter.mitarbeiterDayOfBirth, 'dd.MM.yyyy')}"></td>
+        </tr>
+        <tr>
+            <td>Geburtsort</td>
+            <td th:text="${mitarbeiter.mitarbeiterPlaceOfBirth}"></td>
+        </tr>
+        <tr>
+            <td>Ausbildung</td>
+            <td th:text="${mitarbeiter.mitarbeiterEducation}"></td>
+        </tr>
+        <tr>
+            <td>T&auml;tigkeit</td>
+            <td th:text="${mitarbeiter.mitarbeiterJob}"></td>
+        </tr>
+        <tr>
+            <td>Sprachen</td>
+            <td th:text="${mitarbeiter.mitarbeiterLanguages}"></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td th:text="${mitarbeiter.email}"></td>
+        </tr>
+        <tr>
+            <td>Telefon</td>
+            <td th:text="${mitarbeiter.mitarbeiterTelefon}"></td>
+        </tr>
+        <tr>
+            <td>Eintritt</td>
+            <td th:text="${#temporals.format(mitarbeiter.mitarbeiterEintritt, 'dd.MM.yyyy')}"></td>
+        </tr>
+        <tr th:if="${mitarbeiter.mitarbeiterAustritt != null}">
+            <td>Austritt</td>
+            <td th:text="${#temporals.format(mitarbeiter.mitarbeiterAustritt, 'dd.MM.yyyy')}"></td>
+        </tr>
+
+        <tr th:if="${! mitarbeiter.mitarbeiterFurtherEducations.isEmpty()}">
+            <td>Fortbildungen</td>
+            <td>
+                <a th:each="fortbildung : ${mitarbeiter.mitarbeiterFurtherEducations}" class="linkButton" style="text-decoration:none"
+                   th:href="@{'/fortbildung/showfortbildung/' + ${fortbildung.furtherEducationId}}">
+                    <span th:text="${fortbildung.furtherEducationId} + ' ' + ${fortbildung.furtherEducationName}"></span>
+                    <a class="linkButton" style="margin-left: 10px; text-decoration:none"
+                       th:href="@{'/fortbildung/editfortbildung/' + ${fortbildung.furtherEducationId}}">
+                        <span></span><i style="color: grey;" class="fa fa-edit"></i></a>
+                    </br>
+                </a>
+
+            </td>
+        </tr>
+        <tr th:if="${mitarbeiter.kindeinzel != null}">
+            <td>Einzelkindbetreuung</td>
+            <td th:text="${mitarbeiter.kindeinzel}"></td>
+        </tr>
+
+        <tr th:if="${! mitarbeiter.mitarbeitermitarbeiterDetails.isEmpty()}">
+            <td>Aktiv in Wohngruppe</td>
+            <td>
+                <a th:each="wohngruppe : ${mitarbeiter.mitarbeitermitarbeiterDetails}" class="linkButton" style="text-decoration:none"
+                   th:href="@{'/wohngruppe/showwohngruppe/' + ${wohngruppe.mitarbeiterDetailWohngruppe.wohngruppenId}}">
+                    <span th:text="${wohngruppe.mitarbeiterDetailWohngruppe.wohngruppenId} + ' ' + ${wohngruppe.mitarbeiterDetailWohngruppe.wohngruppenName}"></span>
+                    <a class="linkButton" style="margin-left: 10px; text-decoration:none"
+                       th:href="@{'/wohngruppe/editwohngruppe/' + ${wohngruppe.mitarbeiterDetailWohngruppe.wohngruppenId}}">
+                        <span></span><i style="color: grey;" class="fa fa-edit"></i></a>
+                    </br>
+                </a>
+
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<br>
+<br>
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+
+<br>
+
+
+<a id="btnEditMitarbeiter" class="linkButton" style="margin-left: 20px; text-decoration:none"
+   th:href="@{'/mitarbeiter/editmitarbeiter/' + ${mitarbeiter.mitarbeiterId}}">
+    <span>MA bearbeiten</span><i style="color: grey; margin-left: 5px;" class="fa fa-edit"></i>
+</a>
+<a th:if="${mitarbeiter.mitarbeiterId != null}" class="linkButton" style="margin-left:20px; text-decoration:none" th:href="@{~/mitarbeiterdetail/neuermitarbeiterdetail}">
+    <span>Mitarbeiter zu Wohngruppe</span>
+    <i style="color: ; margin-left: 5px;" class="fa fa-plus"></i>
+</a>
+<a th:if="${dateCompareloeschenMitarbeiter == 1}" id="btnLoeschenMitarbeiter" style="margin-left: 20px; text-decoration:none"
+   th:href="@{'/mitarbeiter/deletemitarbeiter/' + ${mitarbeiter.mitarbeiterId}}"
+   th:data-confirm-delete="|Sind Sie sicher, dass Sie den Mitarbeiter ${mitarbeiter.mitarbeiterId}, ${mitarbeiter.vorname} ${mitarbeiter.nachname} löschen wollen?|"
+   onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+    <span>MA l&ouml;schen</span><i style="color: red; margin-left: 5px;" class="fa fa-trash"></i>
+</a>
+<br>
+<br>
+
+</body>
+</html>

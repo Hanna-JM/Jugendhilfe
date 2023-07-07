@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+<!--    <link rel="stylesheet" href="styles.css">-->
+    <title>alle Wohngruppen anzeigen</title>
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+    <h1 style="margin-left:2%">Liste der Wohngruppen  <i class="fa fa-home"> </i> <i class="fa fa-list"></i></h1>
+</div>
+
+<form class="search" action="/wohngruppe/wohngruppenliste" method="get">
+    <div>
+        <div style="width:40%; float:left">
+            <input id="txtsearch" type="text" class="form-control"
+                   placeholder="WG-Nr., Wohngruppenname, Strasse, Ort" name="keyword"/>
+        </div>
+        <div style="float:left; margin-left:5px;">
+            <button class="standard-button btn2" style="margin-top: 0px">Suchen</button>
+        </div>
+    </div>
+</form>
+
+<br/>
+<br/>
+<br/>
+
+<div class="respTab">
+    <table>
+        <thead>
+        <tr>
+            <th>
+                <a th:href="@{/wohngruppe/wohngruppenliste(sortBy=wohngruppenId)}">
+                    WG-Nr
+                    <i class="fa fa-sort"></i>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{/wohngruppe/wohngruppenliste(sortBy=wohngruppenName)}">
+                    WG-Name
+                    <i class="fa fa-sort"></i>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{/wohngruppe/wohngruppenliste(sortBy=anzahlPlaetze)}">
+                    AnzPlätze
+                    <i class="fa fa-sort"></i>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{/wohngruppe/wohngruppenliste(sortBy=tagessatz)}">
+                    Tagessatz
+                    <i class="fa fa-sort"></i>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{/wohngruppe/wohngruppenliste(sortBy=strasse)}">
+                    Strasse
+                    <i class="fa fa-sort"></i>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{/wohngruppe/wohngruppenliste(sortBy=plz)}">
+                    PLZ
+                    <i class="fa fa-sort"></i>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{/wohngruppe/wohngruppenliste(sortBy=ort)}">
+                    Ort
+                    <i class="fa fa-sort"></i>
+                </a>
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:if="${listWohngruppe.isEmpty()}">
+            <td colspan="4">keine Wohngruppe vorhanden</td>
+        </tr>
+
+        <tr th:each="wohngruppe : ${listWohngruppe}">
+            <td th:text="${wohngruppe.wohngruppenId}"></td>
+            <td th:text="${wohngruppe.wohngruppenName}"></td>
+            <td th:text="${wohngruppe.anzahlPlaetze}"></td>
+            <td th:text="${wohngruppe.tagessatz}"></td>
+            <td th:text="${wohngruppe.strasse}"></td>
+            <td th:text="${wohngruppe.plz}"></td>
+            <td th:text="${wohngruppe.ort}"></td>
+            <td>
+                <a class="linkButton" th:href="@{'/wohngruppe/showwohngruppe/' + ${wohngruppe.wohngruppenId}}">
+                    <span>Anzeigen</span><i style="color: cornsilk;" class="fa fa-eye"></i>
+                </a>
+            </td>
+            <td>
+                <a class="linkButton" th:href="@{'/wohngruppe/editwohngruppe/' + ${wohngruppe.wohngruppenId}}">
+                    <span>&Auml;ndern</span><i style="color: green;" class="fa fa-edit"></i>
+                </a>
+            </td>
+            <td>
+                <a class="linkButton" th:href="@{'/wohngruppe/getKind/'+${wohngruppe.wohngruppenId}}">
+                    <span>Add</span><i style="color: #fed189;" class="fa fa-user-plus"></i>
+                </a>
+            </td>
+            <td>
+                <a class="linkButton" th:href="@{'/wohngruppe/deletewohngruppe/' + ${wohngruppe.wohngruppenId}}">
+                    <span>L&ouml;schen</span><i style="color: red;" class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="pagination" style="display: flex; justify-content: center; align-items: center;">
+    <ul style="display: flex; list-style: none; padding: 0;">
+        <li style="margin: 0 5px;" th:class="${currentPage == 0} ? 'disabled' : ''">
+            <a th:href="@{/wohngruppe/wohngruppenliste(page=0, size=${totalItems})}" class="standard-button btn2">&laquo;</a>
+        </li>
+        <li style="margin: 0 5px;" th:class="${currentPage == 0} ? 'disabled' : ''">
+            <a th:href="@{/wohngruppe/wohngruppenliste(page=${currentPage - 1}, size=${totalItems})}" class="standard-button btn2">&lsaquo;</a>
+        </li>
+        <li style="margin: 0 5px;" th:each="page : ${#numbers.sequence(0, totalPages-1)}" th:class="${page == currentPage} ? 'active' : ''">
+            <a th:href="@{/wohngruppe/wohngruppenliste(page=${page}, size=${totalItems})}" th:text="${page + 1}" class="standard-button btn2"></a>
+        </li>
+        <li style="margin: 0 5px;" th:class="${currentPage == totalPages - 1} ? 'disabled' : ''">
+            <a th:href="@{/wohngruppe/wohngruppenliste(page=${currentPage + 1}, size=${totalItems})}" class="standard-button btn2">&rsaquo;</a>
+        </li>
+        <li style="margin: 0 5px;" th:class="${currentPage == totalPages - 1} ? 'disabled' : ''">
+            <a th:href="@{/wohngruppe/wohngruppenliste(page=${totalPages - 1}, size=${totalItems})}" class="standard-button btn2">&raquo;</a>
+        </li>
+    </ul>
+</div>
+
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"><i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zurück</span></a>
+</div>
+</body>
+</html>
+

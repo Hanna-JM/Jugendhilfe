@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+    <h1 style="margin-left:2%">Fortbildung Info</h1>
+</div>
+
+<div class="respTab">
+    <table class="table" id="listFortbildungTabelle">
+        <tbody>
+
+        <tr > <td style="width:20%">Fortbildungsnummer</td>   <td th:text="${furtherEducation.furtherEducationId}"></td> </tr>
+        <tr >  <td>Name der Fortbildung</td>  <td th:text="${furtherEducation.furtherEducationName}"></td> </tr>
+        <tr >  <td>Zyklus</td>     <td th:text="${furtherEducation.furtherEducationCycle}"></td> </tr>
+        <tr >  <td>Art</td>     <td th:text="${furtherEducation.furtherEducationType}"></td> </tr>
+        <tr >  <td>Tag der Fortbildung</td>      <td id="furtherEducationDateLastExam" th:text="${#temporals.format(furtherEducation.furtherEducationDateLastExam, 'dd.MM.yyyy')}"></td> </tr>
+        <tr >  <td>Mitarbeiter Personalnr.</td>
+        <td>
+            <a class="linkButton" style="text-decoration:none" th:text="${furtherEducation.furtherEducationMitarbeiter.mitarbeiterId}" th:href="@{'/mitarbeiter/showmitarbeiter/' + ${furtherEducation.furtherEducationMitarbeiter.mitarbeiterId}}">
+                <i style="color: grey;" class="fa fa-edit"></i></a>
+            <a class="linkButton" style="margin-left: 5px;" th:href="@{'/mitarbeiter/editmitarbeiter/' + ${furtherEducation.furtherEducationMitarbeiter.mitarbeiterId}}">
+                <i style="color: grey;" class="fa fa-edit"></i></a>
+        </td></tr>
+        <tr >  <td>Mitarbeiter Vorname</td>      <td th:text="${furtherEducation.furtherEducationMitarbeiter.vorname}"></td></tr>
+        <tr >  <td>Mitarbeiter Nachname</td>     <td th:text="${furtherEducation.furtherEducationMitarbeiter.nachname}"></td></tr>
+
+        </tbody>
+    </table>
+</div>
+
+<br>
+<br>
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+<br><br>
+<a id="btnLoeschenShowFurtherEducation" class="linkButton" th:href="@{'/fortbildung/deletefortbildung/' + ${furtherEducation.furtherEducationId}}" style="margin-left: 2%; text-decoration:none"
+   th:data-confirm-delete="|Sind Sie sicher, dass Sie die Fortbildung ${furtherEducation.furtherEducationId}, ${furtherEducation.furtherEducationName} loeschen moechten?|"
+   onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+    <span>FB l&ouml;schen</span><i style="color: grey; margin-left: 5px;" class="fa fa-trash"></i>
+</a>
+
+
+<a class="linkButton" style="margin-left: 20px; text-decoration:none" th:href="@{'/fortbildung/editfortbildung/' + ${furtherEducation.furtherEducationId}}">
+    <span>FB bearbeiten</span><i style="color: grey; margin-left: 5px;" class="fa fa-edit"></i></a>
+
+<a class="linkButton" style="margin-left: 20px; text-decoration:none" th:href="@{'/mitarbeiter/editmitarbeiter/' + ${furtherEducation.furtherEducationMitarbeiter.mitarbeiterId}}">
+    <span>MA bearbeiten</span><i style="color: grey; margin-left: 5px;" class="fa fa-edit"></i></a>
+
+<script type="text/javascript">
+
+var dateCompare = [[${dateCompare}]];
+
+function vergleicheDatum(dateCompare) {
+
+if (dateCompare == 1){
+document.getElementById("furtherEducationDateLastExam").style.color = "orange";
+alert ("Achtung: die Fortbildung sollte demnächst erneuert werden");
+}
+if (dateCompare == 2){
+document.getElementById("furtherEducationDateLastExam").style.color = "darkred";
+alert ("Achtung: die Fortbildung ist abgelaufen");
+}
+if (dateCompare == 3){
+document.getElementById("furtherEducationDateLastExam").style.color = "red";
+alert ("Achtung: die Fortbildung ist heute abgelaufen");
+}
+
+}
+vergleicheDatum(dateCompare);
+
+
+</script>
+
+</body>
+</html>

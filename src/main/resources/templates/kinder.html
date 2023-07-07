@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title>Kinder</title>
+</head>
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+<div layout:fragment="content">
+    <section class="wrapper">
+        <div class="row">
+            <br/>
+            <!--            <div></div>-->
+            <div style="margin-left: 20px ">
+                <a class="backButton" href="javascript:history.back()">
+                    <i style="margin: inherit" class="fa fa-backward"></i>
+                    <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span>
+                </a>
+            </div>
+            <div class="title-page">
+                <div><h1 style="margin-left:2%">Kinderliste&nbsp;<i class="fa fa-child"></i></h1></div>
+            </div>
+            <div class="addButton">
+                <form class="search" th:action="@{/kind/}" method="get">
+
+                    <div>
+                        <div style="width:18%; float:left">
+                            <input id="txtsearch" type="text" class="form-control"
+                                   placeholder="Vorname, Nachname,Allergie,Religion,Datum,..." name="keyword"/>
+                        </div>
+                        <div style="float:left; margin-left:5px;">
+                            <button class="standard-button btn2" style="margin-top: 0">Suchen</button>
+                        </div>
+                    </div>
+                </form>
+
+                <a class="standard-button btn2" style="float:right; margin-right:1%;" th:href="@{'/kind/neueskind'}">
+                    <span style="font-size: 18px">Neues Kind anlegen</span>
+                    <i style="font-size: 20px" class="fa fa-plus"></i></a>
+                <!--                &nbsp;-->
+                <a class="standard-button btn2" style="float:right; margin-right:1%;" th:href="@{'/sorgeberechtiger/'}">
+                    <span style="font-size: 18px">Sorgerberechtigter&nbsp;zeigen&nbsp;</span><i class="fa fa-list"></i>
+                    <span style="font-size: 18px">&nbsp;/&nbsp;anlegen&nbsp;<i class="fa fa-plus"></i></span></a>
+
+                <a class="standard-button btn2" style="float:right; margin-right:1%;"
+                   th:href="@{'/kinddetail/neueskinddetail'}">
+                    <span style="font-size: 18px"> Kind  einer Wohngruppe zuweisen </span>
+                    <i style="font-size: 20px" class="fa fa-home"></i></a>
+
+                <a class="standard-button btn2" style="float:right; margin-right:1%;"
+                   th:href="@{'/kinddetail/kinddetailliste'}">
+                    <span style="font-size: 18px"> Kinder aktive in Wohngruppen </span>
+                    <i style="font-size: 20px" class="fa fa-home"></i></a>
+
+            </div>
+
+            <br/><br/><br/><br/>
+            <br/><br/><br/><br/>
+            <br/><br/>
+
+            <div class="respTab">
+                <div class="panel-body">
+                    <!-- Display success message -->
+                    <div th:if="${success}" class="alert alert-success">
+                        <p style="font-size: larger;color: lawngreen;" align="center"
+                           th:text="#{success.message.deleteKind}"></p>
+                    </div>
+
+                    <!-- Display error message -->
+                    <div th:if="${error}" class="alert alert-danger">
+                        <p style="font-size: larger;color: red;" align="center"
+                           th:text="#{error.message.auszugDatumTooRecent}"></p>
+                    </div>
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Vorname</th>
+                            <th>Nachname</th>
+                            <th>Geschlecht</th>
+                            <th>Geburtsdatum</th>
+                            <th>Einzugsdatum</th>
+                            <th>Auszugsdatum</th>
+                            <th>Allergie</th>
+                            <th>Ern&auml;hrung</th>
+                            <th>Behinderung</th>
+                            <th>Beh&ouml;rde</th>
+                            <th>Religion</th>
+                            <th>W-gruppe ID/Name</th>
+                            <th>Betreuungsgrund</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${listKinder.isEmpty()}">
+                            <td colspan="4"> keine Kinder vorhanden</td>
+                        </tr>
+                        <tr th:each="kind : ${listKinder}">
+                            <td th:text="${kind.kindId}"></td>
+                            <td th:text="${kind.kindVorname}"></td>
+                            <td th:text="${kind.kindNachname}"></td>
+                            <td th:text="${kind.kindGeschlecht}"></td>
+                            <td>
+                              <span th:text="${#temporals.format(kind.geburtsdatum, 'dd.MM.yyyy')}"
+                                    th:style="${kind.isApproaching18Years() ? 'color: red;' : ''}">
+                              </span>
+                            </td>
+                            <td th:text="${#temporals.format(kind.einzug_datum, 'dd.MM.yyyy')}">
+                            <td th:text="${#temporals.format(kind.auszug_datum,'dd.MM.yyyy')}"></td>
+                            <td th:text="${kind.allergie}"
+                                style="color: red ; font-weight: bold;word-break: break-word"></td>
+                            <td th:text="${kind.ernaehrung}"
+                                style="color: mediumspringgreen ;word-break: break-word"></td>
+                            <td th:text="${kind.behinderung}" style="color: mediumorchid"></td>
+                            <td th:text="${kind.kindYouthWelfareOffice.youthWelfareOfficeName}"></td>
+                            <td th:text="${kind.religion}"></td>
+                            <td>
+                                <span th:each="kindDetail : ${kind.kindDetails}" th:if="${kindDetail.aktiv}">
+                                <a th:text="${kindDetail.kindDetailWohngruppe.wohngruppenId} + ' ' + ${kindDetail.kindDetailWohngruppe.wohngruppenName}"
+                                   th:href="@{'/wohngruppe/showwohngruppe/' + ${kindDetail.kindDetailWohngruppe.wohngruppenId}}">
+                                </a>
+                                 <br th:if="${kindDetail.aktiv}">
+                                </span>
+                            </td>
+                            <td th:text="${kind.betreuungsgrund}"></td>
+                            <td>
+                                <a class="linkButton" th:href="@{'/kind/showkind/' + ${kind.kindId}}">
+                                    <span>Anzeigen</span><i style="color: darkcyan;" class="fa fa-eye"></i></a>
+                            </td>
+                            <td>
+                                <a class="linkButton" th:href="@{/kind/editkind(kindId=${kind.kindId})}">
+                                    <span>&Auml;ndern</span><i style="color: green;" class="fa fa-edit"></i></a>
+                            </td>
+                            <td>
+<!--                                <a class="linkButton" th:href="@{'/kind/deletekind/' + ${kind.kindId}}">-->
+<!--                                    <span>L&ouml;schen</span><i style="color: red;" class="fa fa-trash"></i>-->
+<!--                                </a>-->
+
+                                <a th:href="@{'/kind/deletekind/' + ${kind.kindId}}" class="linkButton"
+                                   th:data-confirm-delete="|Sind Sie sicher, dass Sie das Kind ${kind.kindId}, ${kind.kindVorname} ${kind.kindNachname} löschen wollen?|"
+                                   onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                                    <span>l&ouml;schen</span><i style="color: red; margin-left: 5px;" class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+</body>
+</html>

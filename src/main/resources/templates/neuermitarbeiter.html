@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title th:if="${mitarbeiter.mitarbeiterId == null}">neuen Mitarbeiter anlegen</title>
+    <title th:unless="${mitarbeiter.mitarbeiterId == null}">Mitarbeiter aktualisieren</title>
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+    <h1 style="margin-left:2%" th:if="${mitarbeiter.mitarbeiterId == null}">Mitarbeiter Stammdaten anlegen <i class="fa fa-user"></i></h1>
+    <h1 style="margin-left:2%" th:unless="${mitarbeiter.mitarbeiterId == null}">Mitarbeiter Stammdaten aktualisieren <i class="fa fa-user"></i></h1>
+    <a th:if="${mitarbeiter.mitarbeiterId != null}" class="standard-button btn2" style="float:right;margin-right:2%" th:href="@{~/mitarbeiterdetail/neuermitarbeiterdetail}">
+         <span>Mitarbeiter zu Wohngruppe</span>
+         <i style="color: ;" class=""></i>
+    </a>
+</div>
+<br/>
+<br/>
+<br/>
+
+
+<div class="container">
+    <form id="mitarbeiterForm" th:action="@{/mitarbeiter/savemitarbeiter}" th:object="${mitarbeiter}" method="post">
+        <div th:if="${not #strings.isEmpty(error)}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
+        <div class="row" th:if="${mitarbeiter.mitarbeiterId != null}">
+            <div class="col-25">
+                <label for="mitarbeiterId">Personalnummer</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{mitarbeiterId}" type="text" disabled id="mitarbeiterId" name="mitarbeiterId"
+                       placeholder="Personalnummer">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="anrede">Anrede</label>
+            </div>
+
+            <div class="col-75">
+                <select th:field="*{anrede}" id="anrede" name="anrede">
+                    <option value="">Bitte w&auml;hlen</option>
+                    <option th:each="optionAnrede : ${optionenAnredeMitarbeiter}" th:value="${optionAnrede}" th:text="${optionAnrede}"></option>
+                </select>
+                <input type="hidden" th:field="*{mitarbeiterId}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="vorname">Vorname</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{vorname}" type="text" minlength="0" id="vorname" name="vorname"
+                       placeholder="Vorname" >
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="nachname">Nachname</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{nachname}" type="text" minlength="0" id="nachname" name="nachname"
+                       placeholder="Nachname" >
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="strasse">Strasse</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{strasse}" type="text" minlength="0" id="strasse" name="strasse"
+                       placeholder="Strasse">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="plz">Plz</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{plz}" type="text" minlength="0" id="plz" name="plz" placeholder="Plz">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="ort">Ort</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{ort}" type="text" minlength="0" id="ort" name="ort" placeholder="Ort">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="mitarbeiterDayOfBirth" class="form-label">Geburtstag</label>
+            </div>
+            <div class="col-75">
+                <input type="date" th:field="*{mitarbeiterDayOfBirth}" class="form-control" id="mitarbeiterDayOfBirth" name="mitarbeiterDayOfBirth" placeholder="Geburtstag" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="mitarbeiterPlaceOfBirth">Geburtsort</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{mitarbeiterPlaceOfBirth}" type="text" id="mitarbeiterPlaceOfBirth" name="mitarbeiterPlaceOfBirth" placeholder="Geburtsort">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="mitarbeiterEducation">Ausbildung</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{mitarbeiterEducation}" type="text" id="mitarbeiterEducation" name="mitarbeiterEducation" placeholder="Ausbildung">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="mitarbeiterJob">T&auml;tigkeit</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{mitarbeiterJob}" type="text" id="mitarbeiterJob" name="mitarbeiterJob" placeholder="T&auml;tigkeit">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="mitarbeiterLanguages">Sprachen</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{mitarbeiterLanguages}" type="text" id="mitarbeiterLanguages" name="mitarbeiterLanguages" placeholder="Sprachen">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="email">Email</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{email}" type="text" id="email" name="email" placeholder="Email">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="mitarbeiterTelefon">Telefon</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{mitarbeiterTelefon}" type="text" id="mitarbeiterTelefon" name="mitarbeiterTelefon" placeholder="Telefon">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="mitarbeiterEintritt">Eintrittsdatum</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{mitarbeiterEintritt}" type="date" id="mitarbeiterEintritt" name="mitarbeiterEintritt" placeholder="Eintrittsdatum">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="mitarbeiterAustritt">Austrittsdatum</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{mitarbeiterAustritt}" type="date" id="mitarbeiterAustritt" name="mitarbeiterAustritt" placeholder="Austrittsdatum">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="kindeinzel">Kind <br/>(Nr, Vorname, Nachname)</label>
+            </div>
+            <div class="col-75">
+                <select th:field="*{kindeinzel}" id="kindeinzel"
+                        name="kindeinzel">
+                    <option id="optionMitarbeiterKindDefault" value="">Bitte w&auml;hlen</option>
+                    <option th:each="kindeinzel : ${kindList}"
+                            th:value="${kindeinzel.kindId}"
+                            th:text="${kindeinzel.kindId} + ', ' + ${kindeinzel.kindVorname} + ', ' + ${kindeinzel.kindNachname}"></option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <input type="submit" value="Speichern">
+        </div>
+
+        <div th:if="${mitarbeiter.mitarbeiterId == null}" class="row">
+            <input id="btnResetMitarbeiter" onclick="return confirm('Möchten Sie das Formular wirklich leeren?')" type="reset"
+                   class="standard-button btn2">
+        </div>
+    </form>
+</div>
+
+
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+
+
+</body>
+</html>

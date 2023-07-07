@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+        <h1 style="margin-left:2%">Liste aller Fortbildungen <i class="fa fa-list"></i></h1>
+</div>
+<div class="addButton">
+    <a style="float:right" class="standard-button btn2" th:href="@{'/fortbildung/neuefortbildung'}">
+        <span style="font-size: 20px">Neue Fortbildung anlegen</span>
+        <i style="font-size: 20px" class="fa fa-plus"></i></a>
+</div>
+<br/>
+<br>
+<!-- suche über sql -->
+<!--<form class="search" th:action="@{/fortbildung/fortbildungliste}" method="get">-->
+<!--    <div>-->
+<!--        <div style="width:30%; float:left">-->
+<!--            <input id="txtsearch" type="text" class="form-control"-->
+<!--                   placeholder="Fortbildungsnummer, -name, -zyklus, -typ oder -datum" name="keyword"/>-->
+<!--        </div>-->
+<!--        <div style="float:left; margin-left:5px;">-->
+<!--            <button class="standard-button btn2" style="margin-top: 0px">Suchen</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</form>-->
+
+<div class="row">
+    <input type="text" id="furthereducationsearchtable" onkeyup="furtherEducationSearchFunction()"
+           placeholder="Suchbegriff hier eingeben ..."
+           aria-describedby="basic-addon1">
+</div>
+
+<br/>
+<br/>
+
+
+<div class="respTab">
+    <table class="table" id="listFortbildungTabelle">
+        <thead class="thead-dark">
+        <tr>
+            <th style="width:5%">Fortbildungsnummer</th>
+            <th>Name</th>
+            <th>Zyklus</th>
+            <th>Art</th>
+            <th>Tag der Fortbildung</th>
+            <th>Mitarbeiter (Nr.,Vorname,Nachname)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${listFurtherEducation.isEmpty()}">
+            <td colspan="4"> keine Eintr&auml;ge vorhanden</td>
+        </tr>
+        <tr th:each="furtherEducation :${listFurtherEducation}">
+            <td th:text="${furtherEducation.furtherEducationId}"></td>
+            <td th:text="${furtherEducation.furtherEducationName}"></td>
+            <td th:text="${furtherEducation.furtherEducationCycle}" class="feCycleJS"></td>
+            <td th:text="${furtherEducation.furtherEducationType}"></td>
+            <td th:text="${#temporals.format(furtherEducation.furtherEducationDateLastExam, 'dd.MM.yyyy')}" class="feDateJS"></td>
+            <td th:text="${furtherEducation.furtherEducationMitarbeiter.mitarbeiterId} + ', ' + ${furtherEducation.furtherEducationMitarbeiter.vorname} + ', ' + ${furtherEducation.furtherEducationMitarbeiter.nachname}"></td>
+
+            <td>
+                <a title="Details anzeigen" class="linkButton"
+                   th:href="@{'/fortbildung/showfortbildung/' + ${furtherEducation.furtherEducationId}}">
+                    <span>
+<!--                        Anzeigen-->
+                    </span><i style="color: orange;" class="fa fa-eye"></i></a>
+            </td>
+            <td>
+                <a title="Fortbildung bearbeiten" class="linkButton"
+                   th:href="@{'/fortbildung/editfortbildung/' + ${furtherEducation.furtherEducationId}}">
+
+                    <span>
+<!--                        &Auml;ndern-->
+                    </span><i style="color: green;" class="fa fa-edit"></i></a>
+            </td>
+
+            <td>
+<!--                <a title="Fortbildung l&ouml;schen" class="linkButton"-->
+<!--                   th:href="@{'/fortbildung/deletefortbildung/' + ${furtherEducation.furtherEducationId}}">-->
+<!--                    <span>L&ouml;schen</span><i style="color: red;" class="fa fa-trash"></i>-->
+<!--                </a>-->
+                <a title="Fortbildung l&ouml;schen" id="btnLoeschenShowFurtherEducation" class="linkButton" th:href="@{'/fortbildung/deletefortbildung/' + ${furtherEducation.furtherEducationId}}"
+                   th:data-confirm-delete="|Sind Sie sicher, dass Sie die Fortbildung ${furtherEducation.furtherEducationId}, ${furtherEducation.furtherEducationName} loeschen moechten?|"
+                   onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                    <span>
+<!--                        L&ouml;schen-->
+                    </span><i style="color: grey; margin-left: 5px;" class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+<br>
+<br>
+<div style="margin-left: 20px">
+    <a class="backButton" onclick="history.back()" style="float:right; margin-right: 20px"> <i style="margin: inherit"
+                                                                                               class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+
+
+
+
+<script>
+
+let generatedCells = document.getElementsByClassName('feDateJS');
+let generatedCellsCycle = document.getElementsByClassName('feCycleJS');
+
+for (var i = 0; i < generatedCells.length; i++) {
+
+let generatedCell = generatedCells[i];
+let generatedDate = generatedCell.textContent;
+let parts = generatedDate.split('.');
+generatedDate = new Date(parts[2], parts[1] - 1, parts[0]);
+
+let generatedCellCycle = generatedCellsCycle[i];
+let generatedCycle = generatedCellCycle.textContent;
+
+
+if(generatedCycle == 'jährlich' || generatedCycle == 'jaehrlich') {
+
+   let generatedDate11M = new Date(generatedDate);
+   generatedDate11M = new Date(generatedDate11M.setMonth(generatedDate11M.getMonth() + 11));
+
+   let generatedDate12M = new Date(generatedDate);
+   generatedDate12M = new Date(generatedDate12M.setMonth(generatedDate12M.getMonth() + 12));
+
+   let currentDate = new Date();
+   currentDate.setHours(0, 0, 0, 0);
+
+   if (generatedDate11M < currentDate) {
+     generatedCell.style.color = 'orange';
+   }
+
+   if (generatedDate12M < currentDate) {
+     generatedCell.style.color = 'darkred';
+   }
+
+} // if-ende jl
+
+
+
+
+if(generatedCycle == 'halbjährlich' || generatedCycle == 'halbjaehrlich') {
+
+  let generatedDate5M = new Date(generatedDate);
+  generatedDate5M = new Date(generatedDate5M.setMonth(generatedDate5M.getMonth() + 5));
+
+  let generatedDate6M = new Date(generatedDate);
+  generatedDate6M = new Date(generatedDate6M.setMonth(generatedDate6M.getMonth() + 6));
+
+  let currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+
+   if (generatedDate5M < currentDate) {
+    generatedCell.style.color = 'orange';
+   }
+
+   if (generatedDate6M < currentDate) {
+    generatedCell.style.color = 'darkred';
+   }
+
+} // if-ende halbjl
+
+
+if(generatedCycle == 'vierteljährlich' || generatedCycle == 'vierteljaehrlich') {
+
+   let generatedDate2M = new Date(generatedDate);
+   generatedDate2M = new Date(generatedDate2M.setMonth(generatedDate2M.getMonth() + 2));
+
+   let generatedDate3M = new Date(generatedDate);
+   generatedDate3M = new Date(generatedDate3M.setMonth(generatedDate3M.getMonth() + 3));
+
+   let currentDate = new Date();
+   currentDate.setHours(0, 0, 0, 0);
+
+   if (generatedDate2M < currentDate) {
+     generatedCell.style.color = 'orange';
+   }
+
+   if (generatedDate3M < currentDate) {
+     generatedCell.style.color = 'darkred';
+   }
+
+} // if-ende viertljl
+
+
+if(generatedCycle == 'monatlich') {
+
+  let generatedDate3W = new Date(generatedDate);
+  generatedDate3W = new Date(generatedDate3W.setDate(generatedDate3W.getDate() + 21));
+
+  let generatedDate4W = new Date(generatedDate);
+  generatedDate4W = new Date(generatedDate4W.setDate(generatedDate4W.getDate() + 28));
+
+  let currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+
+  if (generatedDate4W < currentDate) {
+    generatedCell.style.color = 'orange';
+  }
+
+   if (generatedDate4W < currentDate) {
+    generatedCell.style.color = 'darkred';
+  }
+
+} // if-ende monatl
+
+
+if(generatedCycle == 'wöchentlich' || generatedCycle == 'woechentlich') {
+
+  let generatedDate5T = new Date(generatedDate);
+  generatedDate5T = new Date(generatedDate5T.setDate(generatedDate5T.getDate() + 5));
+
+  let generatedDate7T = new Date(generatedDate);
+  generatedDate7T = new Date(generatedDate7T.setDate(generatedDate7T.getDate() + 7));
+
+  let currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+
+   if (generatedDate5T < currentDate) {
+    generatedCell.style.color = 'orange';
+   }
+
+   if (generatedDate7T < currentDate) {
+    generatedCell.style.color = 'darkred';
+   }
+
+} // if-ende woetl
+
+
+} // for-ende
+
+</script>
+
+</body>
+</html>

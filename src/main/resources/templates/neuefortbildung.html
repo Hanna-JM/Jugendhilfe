@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+    <title th:if="${furtherEducation.furtherEducationId == null}">neue Fortbildung anlegen</title>
+    <title th:unless="${furtherEducation.furtherEducationId == null}">Fortbildung aktualisieren</title>
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+    <h1 style="margin-left:2%" th:if="${furtherEducation.furtherEducationId == null}" id="headlineAnlegenFortbildung">Neue Fortbildung anlegen </h1>
+    <h1 style="margin-left:2%" id="headlineEditierenFortbildung">Fortbildung aktualisieren </h1>
+</div>
+
+<a class="standard-button btn2" style="float:right" th:href="@{'/fortbildung/fortbildungliste'}">
+    <i style="font-size: 20px; margin-right:5px" class="fa fa-list"></i><span style="font-size: 20px">Liste aller Fortbildungen</span>
+</a>
+<br>
+<br>
+<br><br>
+<div class="container">
+    <form id="fortbildungForm" th:action="@{/fortbildung/savefortbildung}" th:object="${furtherEducation}"
+          method="post">
+        <div th:if="${not #strings.isEmpty(error)}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="furtherEducationName">Name der Fortbildung</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{furtherEducationName}" type="text" minlength="0" id="furtherEducationName"
+                       name="furtherEducationName"
+                       placeholder="Name der Fortbildung">
+                <input type="hidden" th:field="*{furtherEducationId}"
+                       th:value="${furtherEducation.furtherEducationId}"/>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="furtherEducationCycle">Zyklus der Fortbildung</label>
+            </div>
+            <div class="col-75">
+                <select th:field="*{furtherEducationCycle}" id="furtherEducationCycle" name="furtherEducationCycle">
+                    <option id="furtherEducationCycleDefault" value="">Bitte w&auml;hlen</option>
+                    <option th:each="optionFurtherEducationCycle : ${furtherEducationCycleOptions}" th:value="${optionFurtherEducationCycle}"
+                            th:text="${optionFurtherEducationCycle}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="furtherEducationType">Art der Fortbildung</label>
+            </div>
+            <div class="col-75">
+                <select th:field="*{furtherEducationType}" id="furtherEducationType" name="furtherEducationType">
+                    <option id="furtherEducationTypeDefault" value="">Bitte w&auml;hlen</option>
+                    <option th:each="optionFurtherEducationType : ${furtherEducationTypeOptions}" th:value="${optionFurtherEducationType}"
+                            th:text="${optionFurtherEducationType}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="furtherEducationDateLastExam">Tag der Fortbildung</label>
+            </div>
+            <div class="col-75">
+                <input th:field="*{furtherEducationDateLastExam}" type="date" minlength="0"
+                       id="furtherEducationDateLastExam" name="furtherEducationDateLastExam"
+                       placeholder="Tag der Fortbildung">
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-25">
+                <label for="furtherEducationMitarbeiter">Mitarbeiter <br/>(Nachname, Vorname, Personalnummer)</label>
+            </div>
+            <div class="col-75">
+                <br/>
+                <select th:field="*{furtherEducationMitarbeiter}" id="furtherEducationMitarbeiter"
+                        name="furtherEducationMitarbeiter">
+                    <option id="optionfurtherEducationMitarbeiterDefault" value="">Bitte w&auml;hlen</option>
+                    <option th:each="furtherEducationMitarbeiter : ${mitarbeiterList}"
+                            th:value="${furtherEducationMitarbeiter.mitarbeiterId}"
+                            th:text="${furtherEducationMitarbeiter.nachname } + ', ' + ${furtherEducationMitarbeiter.vorname} + ', ' + ${furtherEducationMitarbeiter.mitarbeiterId}"></option>
+                </select>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <div class="row">
+            <input type="submit" value="Speichern">
+        </div>
+        <div th:if="${furtherEducation.furtherEducationId == null}" class="row">
+            <input id="btnResetFurtherEducation" onclick="return confirm('Möchten Sie das Formular wirklich leeren?')" type="reset" class="standard-button btn2">
+        </div>
+<!--        <a id="btnLoeschenEditFurtherEducation" class="linkButton"-->
+<!--           th:href="@{'/fortbildung/deletefortbildung/' + ${furtherEducation.furtherEducationId}}">-->
+<!--            <span>L&ouml;schen</span><i style="color: red;" class="fa fa-trash"></i></a>-->
+        <a id="btnLoeschenEditFurtherEducation" class="linkButton" th:href="@{'/fortbildung/deletefortbildung/' + ${furtherEducation.furtherEducationId}}" style="margin-left: 2%; text-decoration:none"
+           th:data-confirm-delete="|Sind Sie sicher, dass Sie die Fortbildung ${furtherEducation.furtherEducationId}, ${furtherEducation.furtherEducationName} loeschen moechten?|"
+           onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+            <span>FB l&ouml;schen</span><i style="color: grey; margin-left: 5px;" class="fa fa-trash"></i>
+        </a>
+        <br>
+        <br>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+if (window.location.href.indexOf("fortbildung/editfortbildung") > -1) {
+document.getElementById("btnLoeschenEditFurtherEducation").style.display = "";
+document.getElementById("btnResetFurtherEducation").style.display = "none";
+document.getElementById("optionfurtherEducationMitarbeiterDefault").style.display = "none";
+document.getElementById("headlineAnlegenFortbildung").style.display = "none";
+document.getElementById("headlineEditierenFortbildung").style.display = "";
+
+}
+else {
+document.getElementById("btnLoeschenEditFurtherEducation").style.display = "none";
+document.getElementById("btnResetFurtherEducation").style.display = "";
+document.getElementById("optionfurtherEducationMitarbeiterDefault").style.display = "";
+document.getElementById("headlineAnlegenFortbildung").style.display = "";
+document.getElementById("headlineEditierenFortbildung").style.display = "none";
+
+}
+
+
+</script>
+
+<br>
+<br>
+<div style="margin-left: 20px ">
+    <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+
+
+<script type="text/javascript">
+
+let dateCompare = [[${dateCompare}]];
+
+function vergleicheDatum(dateCompare) {
+
+if (dateCompare == 1){
+document.getElementById("furtherEducationDateLastExam").style.color = "orange";
+alert ("Achtung: die Fortbildung sollte demnächst erneuert werden");
+}
+if (dateCompare == 2){
+document.getElementById("furtherEducationDateLastExam").style.color = "darkred";
+alert ("Achtung: die Fortbildung ist abgelaufen");
+}
+if (dateCompare == 3){
+document.getElementById("furtherEducationDateLastExam").style.color = "red";
+alert ("Achtung: die Fortbildung ist heute abgelaufen");
+}
+
+}
+vergleicheDatum(dateCompare);
+
+
+</script>
+
+
+
+</body>
+</html>
+
+

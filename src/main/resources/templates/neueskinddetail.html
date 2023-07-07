@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <div th:replace="~{head :: fragment}"></div>
+<!--  <title>neues Kind Detail anlegen</title>-->
+  <title th:if="${kinddetail.kindDetailId == null}">Zuordnung Kind - Wohngruppe anlegen</title>
+  <title th:unless="${kinddetail.kindDetailId == null}">Zuordnung Kind - Wohngruppe aktualisieren</title>
+</head>
+
+<body>
+
+<div th:insert="~{navbar :: navbar}"></div>
+
+<div class="title-page">
+
+<!--  <h2 >Neues Kind Detail anlegen </h2>-->
+  <h1 style="margin-left:2%" th:if="${kinddetail.kindDetailId == null}">Zuordnung Kind - Wohngruppe anlegen <i class="fa fa-user"></i> <i class="fa fa-home"></i></h1>
+  <h1 style="margin-left:2%" th:unless="${kinddetail.kindDetailId == null}">Zuordnung Kind - Wohngruppe aktualisieren <i class="fa fa-pencil-square-o"></i></h1>
+
+</div>
+
+<div class="container">
+  <form id="kindDetailForm" th:action="@{/kinddetail/savekinddetail}" th:object="${kinddetail}" method="post">
+    <div th:if="${not #strings.isEmpty(error)}" class="alert alert-danger">
+      <p th:text="${error}"></p>
+    </div>
+    <div class="row" th:if="${kinddetail.kindDetailId != null}">
+      <div class="col-25">
+        <label for="kindDetailId">KindDetailNr</label>
+      </div>
+      <div class="col-75">
+        <input th:field="*{kindDetailId}" type="text" disabled id="kindDetailId" name="kindDetailId"
+               placeholder="KindDetailNr">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25">
+        <label for="kind">Kind</label>
+      </div>
+      <div class="col-75">
+        <select th:field="*{kindDetailKind}"id="kind" name="kind">
+          <option value="">Bitte Kind ausw&auml;hlen</option>
+          <option th:each="kind : ${kindList}"
+                  th:value="${kind.kindId}"
+                th:text="${kind.kindId + ', ' + kind.kindVorname + ', ' + kind.kindNachname}">/</option>
+        </select>
+        <input type="hidden" th:field="*{kindDetailId}"/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25">
+        <label for="einzug">Einzug in WG</label>
+      </div>
+      <div class="col-75">
+        <input th:field="*{einzug}" type="date" minlength="0" id="einzug" name="einzug" placeholder="Einzug in WG">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25">
+        <label for="auszug">Auszug aus WG</label>
+      </div>
+      <div class="col-75">
+        <input th:field="*{auszug}" type="date" minlength="0" id="auszug" name="auszug" placeholder="Auszug">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25">
+        <label for="wohngruppe">Wohngruppe</label>
+      </div>
+      <div class="col-75">
+        <select th:field="*{kindDetailWohngruppe}" id="wohngruppe" name = "wohngruppe">
+          <option value="">Bitte Wohngruppe w&auml;hlen</option>
+          <option th:each="wohngruppe : ${wohngruppenList}"
+                  th:value="${wohngruppe.wohngruppenId}"
+                  th:text="${wohngruppe.wohngruppenId} + ', ' +
+                  ${wohngruppe.wohngruppenName}"></option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <input type="submit" value="Speichern">
+    </div>
+    <br><br>
+    <div  class="row">
+      <input id="btnResetKindZuWohngruppe" onclick="return confirm('Möchten Sie das Formular wirklich leeren?')" type="reset"
+             class="standard-button btn2">
+    </div>
+  </form>
+</div>
+
+
+<div style="margin-left: 20px ">
+  <a class="backButton" onclick="history.back()"> <i style="margin: inherit" class="fa fa-backward"></i>
+    <span style="margin: 2px 2px 1px 5px;">Zur&uuml;ck</span></a>
+</div>
+
+<br/>
+<div class="addButton">
+  <a class="standard-button btn2" th:href="@{'/kind/'}">
+    <span style="font-size: 20px"> Kinder Liste</span>
+    <i style="font-size: 20px" class="fa fa-child"></i></a>
+  
+</div>
+</body>
+</html>
+
+

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{head :: fragment}"></div>
+
+    <title>Neues Kind anlegen</title>
+
+    <!--    <title th:if="${kind.kindId ==null}">Neues Kind anlegen</title>-->
+    <!--    <title th:unless="${kind.kindId ==null}"> Kind aktualisieren</title>-->
+</head>
+
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+<br/>
+<div></div>
+<div style="margin-left: 20px ">
+    <a class="backButton" href="javascript:history.back()">
+        <i style="margin: inherit" class="fa fa-backward"></i>
+        <span style="margin: 2px 2px 1px 5px;">Zurück</span>
+    </a>
+</div>
+
+<div class="title-page">
+    <div th:if="${kind.kindId ==null}"><h1 style="margin-left:2%">Neues Kind anlegen&nbsp;<i class="fa fa-child"></i></h1></div>
+    <div th:unless="${kind.kindId ==null}"><h1 style="margin-left:2%">Kind aktualisieren <i class="fa fa-pencil-square-o"></i></h1></div>
+    <!--    <h2>Kind anlegen/editieren</h2>-->
+    <!--     <i class="fa fa-pencil-square-o"></i>-->
+    <!--     <i class="fa fa-child"></i>-->
+</div>
+
+<div class="container">
+
+    <form action="#" th:action="@{/kind/savekind}" th:object="${kind}" method="post">
+
+        <div class="row">
+            <div class="col-25">
+                <label for="kindVorname" class="form-label">Vorname *</label>
+            </div>
+            <div class="col-75">
+                <input type="text" th:field="*{kindVorname}" class="form-control"
+                       id="kindVorname" name="kindVorname"
+                       placeholder="Vorname *" required/>
+                <input type="hidden" th:field="*{kindId}"/>
+                <!--         <input type="hidden" name="kindId" th:value="${kind.kindId}"/>-->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="kindNachname" class="form-label">Nachname *</label>
+            </div>
+            <div class="col-75">
+                <input type="text" th:field="*{kindNachname}" class="form-control"
+                       id="kindNachname" name="kindNachname"
+                       placeholder="Nachname *" required/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="kindGeschlecht" class="form-label">Geschlecht *</label>
+            </div>
+            <div class="col-75">
+                <select th:field="*{kindGeschlecht}" class="form-control"
+                        name="kindgeschlecht" id="kindGeschlecht" required>
+                    <!--        <option value="" selected disabled id="placeholder-option">Bitte wählen Sie...</option>-->
+                    <!--        <option value="" selected disabled>Bitte wählen Sie...</option>-->
+                    <option value="" selected hidden>Bitte wählen Sie...</option>
+                    <option th:value="Weiblich" th:text="Weiblich">Weiblich</option>
+                    <option th:value="Mannlich" th:text="Mannlich">Mannlich</option>
+                    <option th:value="Divers" th:text="Diverse">Diverse</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="geburtsdatum" class="form-label">Geburtsdatum</label>
+            </div>
+            <div class="col-75">
+                <input type="date" th:field="*{geburtsdatum}"
+                       class="form-control" id="geburtsdatum" name="geburtsdatum"
+                       placeholder="Geburtsdatum" required
+                       th:style="${kind.kindId != null and kind.isApproaching18Years()} ? 'color: red;' : ''"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="allergie" class="form-label">Allergie</label>
+            </div>
+            <div class="col-75">
+                <input type="text" th:field="*{allergie}" class="form-control"
+                       id="allergie" name="allergie"
+                       style="color: red"
+                       placeholder="Allergie"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="ernaehrung" class="form-label">Ern&auml;hrung</label>
+            </div>
+            <div class="col-75">
+                <input type="text" th:field="*{ernaehrung}" class="form-control"
+                       id="ernaehrung" name="ernaehrung"
+                       style="color: mediumspringgreen"
+                       placeholder="Besondere ernährungsphysiologische Hinweise"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="behinderung" class="form-label">Behinderung</label>
+            </div>
+            <div class="col-75">
+                <input type="text" th:field="*{behinderung}" class="form-control"
+                       id="behinderung" name="behinderung"
+                       style="color: mediumorchid"
+                       placeholder="Behinderung"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="einzug_datum" class="form-label">Einzugsdatum *</label>
+            </div>
+            <div class="col-75">
+                <input type="date" th:field="*{einzug_datum}"
+                       class="form-control" id="einzug_datum" name="einzug_datum"
+                       placeholder="Einzugsdatum *" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="auszug_datum" class="form-label">Auszugsdatum</label>
+            </div>
+            <div class="col-75">
+                <input type="date" th:field="*{auszug_datum}"
+                       class="form-control" id="auszug_datum" name="auszug_datum"
+                       placeholder="Auszugsdatum"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="kindYouthWelfareOffice">Beh&ouml;rde *<br/>(Name, Nr, Bundesland)</label>
+            </div>
+            <div class="col-75">
+                <select th:field="*{kindYouthWelfareOffice}" id="kindYouthWelfareOffice"
+                        name="kindYouthWelfareOffice" required>
+                    <option id="optionKindYouthWelfareOfficeDefault" value="">Bitte w&auml;hlen</option>
+                    <option th:each="kindYouthWelfareOffice : ${youthWelfareOfficeList}"
+                            th:value="${kindYouthWelfareOffice.youthWelfareOfficeId}"
+                            th:text="${kindYouthWelfareOffice.youthWelfareOfficeName} + ', ' + ${kindYouthWelfareOffice.youthWelfareOfficeId} + ', ' + ${kindYouthWelfareOffice.youthWelfareOfficeState}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="religion" class="form-label">Religion</label>
+            </div>
+            <div class="col-75">
+                <select th:field="*{religion}" class="form-control"
+                        name="religion" id="religion">
+                    <option value="" selected hidden>Bitte w&auml;hlen Sie...</option>
+                    <option th:value="christlich" th:text="christlich">christlich</option>
+                    <option th:value="juedisch" th:text="juedisch">j&uuml;disch</option>
+                    <option th:value="muslimisch" th:text="muslimisch">muslimisch</option>
+                    <option value="" th:text="''"></option>
+                </select>
+
+                <label for="addCustomOptionCheckbox"></label><input type="checkbox" id="addCustomOptionCheckbox"
+                                                                    onclick="toggleCustomOptionField()">
+                Benutzerdefinierte Option hinzufügen, wenn Religion nicht in den Optionen enthalten ist
+                <div id="customOptionField" style="display: none;">
+                    <br/>
+                    <label for="customOption">Custom option: Feld leeren, wenn aus der Liste ausgewählt</label>
+                    <input type="text" id="customOption" name="customOption">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="betreuungsgrund" class="form-label">Betreuungsgrund</label>
+            </div>
+            <div class="col-75">
+                <input type="text" th:field="*{betreuungsgrund}" class="form-control"
+                       id="betreuungsgrund" name="betreuungsgrund"
+                       placeholder="Betreuungsgrund"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="siblingId" class="form-label">Geschwister:</label>
+            </div>
+            <div class="col-75">
+                <select th:field="*{siblings}" id="siblingId" name="siblingId" multiple="multiple">
+                    <option value="">Select a sibling</option>
+                    <option th:each="sibling : ${kinderList}"
+                            th:value="${sibling.kindId}"
+                            th:text="${sibling.kindVorname + ' ' + sibling.kindNachname}">
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row"  th:if="${kind.kindId !=null}">
+            <div class="col-25">
+                <label for="mitarbeiterId" class="form-label">Mitarbeiter für reisenden Kind</label>
+            </div>
+            <div class="col-75">
+                <select  id="mitarbeiterId" name="mitarbeiterId" >
+                    <option value="">Select a Mitarbeiter</option>
+                    <option th:each="mitarbeitereinzel : ${mitarbeiterList}"
+                            th:value="${mitarbeitereinzel.mitarbeiterId}"
+                            th:text="${mitarbeitereinzel.vorname + ' ' + mitarbeitereinzel.nachname}">
+                    </option>
+<!--                    <input type="hidden" th:field="*{mitarbeitereinzel.mitarbeiterId}"/>-->
+                    <input type="hidden" th:field="*{mitarbeitereinzel}"/>
+                </select>
+            </div>
+        </div>
+
+        <br/>
+        <div class="addButton">
+            <a class="standard-button btn2" th:href="@{'/sorgeberechtiger/'}">
+                <span style="font-size: 20px"> Sorgerberechtigter anlegen</span>
+                <i style="font-size: 20px" class="fa fa-plus"></i></a>
+            <!--            class="linkButton"  th:href="@{'/sorgeberechtiger/'}"-->
+        </div>
+        <br/>
+
+        <p>Kind ID: [[${kind.kindId}]]</p>
+        <label for="sorgeberechtigerId" style="font-size: large">Wählen Sie die Sorgeberechtigten des Kindes
+            (Multiple: Mehrere Auswahlmöglichkeiten sind möglich) :</label>
+        <select th:field="*{sorgeberechtigerSet}" name="sorgeberechtigerId" id="sorgeberechtigerId" multiple="multiple"
+                th:required="false">
+            <option th:each="sorgeberechtiger : ${sorgeberechtigerList}"
+                    th:value="${sorgeberechtiger.sorgeberechtigerId}"
+                    th:text="${sorgeberechtiger.sorgeberechtigerVorname} + ' ' + ${sorgeberechtiger.sorgeberechtigerNachname} ">
+
+            </option>
+        </select>
+        <!--        <p>Selected Sorgeberechtiger: <span id="selectedSorgeberechtigerList"></span></p>-->
+        <h2>Selected Sorgeberechtigter:</h2>
+        <ul id="selectedSorgeberechtigerList"></ul>
+
+        <br/>
+
+        <h1>Kind&nbsp;Info</h1>
+
+        <div th:if="${kind != null}">
+            <p>ID: <span th:text="${kind.kindId}"/></p>
+            <p>Vorname: <span th:text="${kind.kindVorname}"/></p>
+            <p>Nachname: <span th:text="${kind.kindNachname}"/></p>
+            <p>Wohngruppe:
+                <span th:each="kindDetail : ${kind.kindDetails}" th:if="${kindDetail.aktiv}">
+                <a th:text="${kindDetail.kindDetailWohngruppe.wohngruppenId} + ' ' + ${kindDetail.kindDetailWohngruppe.wohngruppenName}"
+                   th:href="@{'/wohngruppe/showwohngruppe/' + ${kindDetail.kindDetailWohngruppe.wohngruppenId}}">
+                </a>
+                </span>
+            </p>
+            <h3>Sorgeberechtigter:</h3>
+            <ul>
+                <li th:each="sorgeberechtiger : ${kind.sorgeberechtigerSet}">
+                    <span th:text="${sorgeberechtiger.sorgeberechtigerVorname}"/>
+                    <span th:text="${sorgeberechtiger.sorgeberechtigerNachname}"/>
+                </li>
+            </ul>
+
+
+            <h3>Wohngruppen, in denen das Kind gelebt hat, und deren Mitarbeiter:</h3>
+            <ul>
+                <li th:each="kindDetail : ${kind.kindDetails}">
+                    <a th:href="@{'/wohngruppe/showwohngruppe/' + ${kindDetail.kindDetailWohngruppe.wohngruppenId}}">
+                        <span th:text="${kindDetail.kindDetailWohngruppe.wohngruppenName}"></span>
+                    </a>
+                    <ul>
+                        <li th:each="mitarbeiter: ${kindDetail.kindDetailWohngruppe.mitarbeiterDetailList}">
+                            <a th:href="@{'/mitarbeiter/showmitarbeiter/' +  ${mitarbeiter.mitarbeiterDetailMitarbeiter.mitarbeiterId }}">
+                                <span th:text="${mitarbeiter.mitarbeiterDetailMitarbeiter.vorname} + ' ' + ${mitarbeiter.mitarbeiterDetailMitarbeiter.nachname}"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+
+            <h3>Geschwister</h3>
+
+            <ul>
+                <li th:each="sibling : ${kind.siblings}">
+                    <a th:href="@{'/kind/showkind/' + ${sibling.kindId}}">
+                        <span th:text="${sibling.kindId}+ ' ' + ${sibling.kindVorname} + ' ' + ${sibling.kindNachname}"></span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+        <br/>
+
+        <div style="padding-left: 40%">
+            <button type="submit" class="standard-button btn2">Speichern</button>
+            <!--         <button type="reset" class="linkButton">Abbrechen</button>-->
+            <!--         <a href="/kind/" class="linkButton">Abbrechen</a>-->
+            <button type="button" class="standard-button btn2" onclick="location.href='/kind/'">Abbrechen</button>
+        </div>
+
+    </form>
+
+    <br/><br/>
+    <script>
+        var selectElement = document.getElementById("sorgeberechtigerId");
+        var selectedSorgeberechtigerList = document.getElementById("selectedSorgeberechtigerList");
+
+        selectElement.addEventListener("change", updateSelectedSorgeberechtiger);
+
+        function updateSelectedSorgeberechtiger() {
+            // Clear the existing list
+            selectedSorgeberechtigerList.innerHTML = "";
+
+            // Get all selected options
+            var selectedOptions = Array.from(selectElement.selectedOptions);
+
+            // Add the selected options to the list
+            selectedOptions.forEach(function (option) {
+                var sorgeberechtigerName = option.text;
+                var listItem = document.createElement("li");
+                listItem.textContent = sorgeberechtigerName;
+                selectedSorgeberechtigerList.appendChild(listItem);
+            });
+        }
+
+        // Initial call to populate the list if there are pre-selected options
+        updateSelectedSorgeberechtiger();
+    </script>
+
+
+    <script>
+        window.onload = function () {
+            setSelectedOption();
+            toggleCustomOptionField();
+        };
+
+        /**
+         * Sets the selected option for the "religion" field based on the retrieved value from the model.
+         * If the value is included in the list of religion options, it will be displayed in the religion field
+         * and the custom option field will be hidden. If the value is not included, it will be displayed in the
+         * custom option field and the custom option field will be shown with the checkbox checked.
+         */
+        function setSelectedOption() {
+            var religionField = document.getElementById("religion");
+            var selectedValue = '[[${kind.religion}]]';
+
+            var religionOptions = religionField.options;
+            var isIncludedInOptions = false;
+
+            // Check if the selected value is included in the religion options
+            for (var i = 0; i < religionOptions.length; i++) {
+                if (religionOptions[i].value === selectedValue) {
+                    religionField.value = selectedValue;
+                    isIncludedInOptions = true;
+                    break;
+                }
+            }
+
+            var customOptionField = document.getElementById("customOptionField");
+            var addCustomOptionCheckbox = document.getElementById("addCustomOptionCheckbox");
+
+            // Set the appropriate display and checkbox state based on inclusion in options
+            if (!isIncludedInOptions) {
+                customOptionField.style.display = "block";
+                document.getElementById("customOption").value = selectedValue;
+                addCustomOptionCheckbox.checked = true;
+            } else {
+                customOptionField.style.display = "none";
+                document.getElementById("customOption").value = "";
+                addCustomOptionCheckbox.checked = false;
+            }
+        }
+
+
+        function toggleCustomOptionField() {
+            // Retrieve the custom option field container element
+            var customOptionField = document.getElementById("customOptionField");
+
+            var addCustomOptioncheckbox = document.getElementById("addCustomOptionCheckbox").checked;
+
+            // Determine the display value based on the checked state of the checkbox
+            // customOptionField.style.display = document.getElementById("addCustomOptionCheckbox").checked ? "block" : "none";
+            customOptionField.style.display = addCustomOptioncheckbox ? "block" : "none";
+
+            // if the field is hidden, clear the custom option value(clear any previously entered value if it becomes visible again)
+            if (!customOptionField.style.display) {
+                document.getElementById("customOption").value = "";
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

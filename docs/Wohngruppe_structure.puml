@@ -1,0 +1,225 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.jugendhilfe.jugendhilfe.domain.Wohngruppe",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1528762891 { 
+   	label=jugendhilfe
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_675274072 { 
+   	label=jugendhilfe
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   FurtherEducation679482583[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)FurtherEducation</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   furtherEducationCycle: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   furtherEducationCycleOptions: List&lt;String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   furtherEducationDateLastExam: LocalDate [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   furtherEducationId: Long [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   furtherEducationMitarbeiter: Mitarbeiter [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   furtherEducationName: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   furtherEducationType: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   furtherEducationTypeOptions: List&lt;String&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># canEqual(other: Object): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+KindDetail679482583[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)KindDetail</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   aktiv: Boolean [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   auszug: LocalDate [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   einzug: LocalDate [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   kindDetailId: Long [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   kindDetailKind: Kind [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   kindDetailWohngruppe: Wohngruppe [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># canEqual(other: Object): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Mitarbeiter679482583[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Mitarbeiter</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   anrede: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   email: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterDayOfBirth: LocalDate [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterEducation: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterFurtherEducations: List&lt;FurtherEducation&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterId: Long [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterJob: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterLanguages: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterPlaceOfBirth: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterTelefon: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeitermitarbeiterDetails: List&lt;MitarbeiterDetail&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nachname: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   optionenAnredeMitarbeiter: List&lt;String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   ort: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plz: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   strasse: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   vorname: String [0..1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MitarbeiterDetail679482583[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MitarbeiterDetail</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   aktiv: Boolean [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   einsatzBeginn: LocalDate [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   einsatzEnde: LocalDate [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterDetailId: Long [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterDetailMitarbeiter: Mitarbeiter [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterDetailWohngruppe: Wohngruppe [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># canEqual(other: Object): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Wohngruppe679482583[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Wohngruppe</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   anzahlPlaetze: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mitarbeiterDetailList: List&lt;MitarbeiterDetail&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   ort: String [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plz: String [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   strasse: String [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tagessatz: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   wohngruppenId: Long [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   wohngruppenName: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># canEqual(other: Object): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+FurtherEducation679482583 -> Mitarbeiter679482583[label="furtherEducationMitarbeiter
+[0..1]"];
+KindDetail679482583 -> Wohngruppe679482583[label="kindDetailWohngruppe
+[0..1]"];
+Mitarbeiter679482583 -> FurtherEducation679482583[label="mitarbeiterFurtherEducations
+[0..*]"];
+Mitarbeiter679482583 -> MitarbeiterDetail679482583[label="mitarbeitermitarbeiterDetails
+[0..*]"];
+MitarbeiterDetail679482583 -> Mitarbeiter679482583[label="mitarbeiterDetailMitarbeiter
+[0..1]"];
+MitarbeiterDetail679482583 -> Wohngruppe679482583[label="mitarbeiterDetailWohngruppe
+[0..1]"];
+Wohngruppe679482583 -> MitarbeiterDetail679482583[label="mitarbeiterDetailList
+[0..*]"];
+    
+}
+@enduml

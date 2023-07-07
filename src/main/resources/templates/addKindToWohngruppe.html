@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<h2>Kind zur bestimmten Wohngruppe hinzufügen</h2>
+
+<form th:action="@{/wohngruppe/addKindToWohngruppe/kind}" method="post" th:object="${wohngruppe}">
+    <label class="form-label">Bitte ein Kind auswählen</label> </br> </br>
+    <input type="hidden" name="wohngruppenId" th:value="${wohngruppenId}" />
+    <select name="kindId">
+        <option th:each="kind : ${kindList}" th:value="${kind.kindId}" th:text="${kind.kindVorname} + ' ' + ${kind.kindNachname}"></option>
+    </select>
+    <button type="submit">Add Kind</button>
+</form>
+
+
+</body>
+</html>
+
+
+
+
