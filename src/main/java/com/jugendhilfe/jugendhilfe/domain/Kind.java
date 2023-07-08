@@ -275,6 +275,7 @@ public class Kind {
             return years + " years";
         }
     }
+
 //    public int getAge() {
 //        LocalDate currentDate = LocalDate.now();
 //        Period period = Period.between(geburtsdatum, currentDate);
